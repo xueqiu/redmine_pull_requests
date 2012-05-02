@@ -1,6 +1,7 @@
 class PullsController < ApplicationController
   unloadable
-
+  
+  menu_item :pull_requests
   before_filter :find_project
 
   def index

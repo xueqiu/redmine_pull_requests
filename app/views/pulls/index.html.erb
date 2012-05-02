@@ -1,0 +1,17 @@
+<% title = l(:label_all_pull_requests) %>
+
+<% html_title title %>
+
+<% content_for :header_tags do %>
+<%= stylesheet_link_tag 'scm' %>
+<% end %>
+
+<h2><%=h title %></h2>
+
+<% @pulls.each do |pull| %>
+  <p>
+  <%= pull[:title] %>
+  <%= pull[:base_branch] %>
+  <%= pull[:head_branch] %>
+  </p>
+<% end %>

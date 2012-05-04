@@ -1,0 +1,12 @@
+<table class="list changesets">
+<tbody>
+<% @revisions.each do |changeset| %>
+<tr class="changeset <%= cycle 'odd', 'even' %>">
+<td class="id"><%= link_to_revision(changeset, @repository) %></td>
+<td class="committed_on"><%= format_time(changeset.committed_on) %></td>
+<td class="author"><%= h truncate(changeset.author.to_s, :length => 30) %></td>
+<td class="comments"><%= truncate_at_line_break(changeset.comments) %></td>
+</tr>
+<% end %>
+</tbody>
+</table>

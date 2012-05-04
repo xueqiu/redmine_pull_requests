@@ -1,6 +1,16 @@
 require 'redmine'
+require 'dispatcher'
 
 require_dependency 'redmine_pull_requests/view_hooks'
+require_dependency 'redmine_pull_requests/repository_git_patch'
+
+Dispatcher.to_prepare :redmine_pull_requests do
+  require_dependency 'repository'
+
+  unless Repository::Git.included_modules.include? RedminePullRequests::RepositoryPatch
+    Repository.send(:include, RedminePullRequests::RepositoryPatch)
+  end
+end
 
 Redmine::Plugin.register :redmine_pull_requests do
   name 'Redmine Pull Requests plugin'
@@ -15,10 +25,10 @@ Redmine::Plugin.register :redmine_pull_requests do
   project_module :pull_requests do
     permission :view_pull_requests,   :pulls => [:index, :show]
     permission :add_pull_requests,    :pulls => [:new, :create]
-    permission :edit_pull_requests,   :pastes => [:edit, :update]
-    permission :delete_pull_requests, :pastes => [:destroy]
+    permission :edit_pull_requests,   :pulls => [:edit, :update]
+    permission :delete_pull_requests, :pulls => [:destroy]
   end
   
-  menu :project_menu, :pull_requests, { :controller => 'pulls', :action => 'index' }, 
-       :caption => :label_all_pull_requests, :after => :label_wiki, :param => :project_id  
+  menu :project_menu, :pulls, { :controller => 'pulls', :action => 'index' }, 
+       :caption => :label_pull_requests, :after => :label_wiki, :param => :project_id  
 end

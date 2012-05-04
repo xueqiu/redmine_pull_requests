@@ -1,3 +1,16 @@
 # English strings go here for Rails i18n
 en:
-  label_all_pull_requests: "Pull requests"
+  label_pull_requests: "Pull requests"
+  label_pull_requests_view: "View pull requests"
+  label_pull_request_new: "New pull request"
+  
+  label_base_branch: "Base branch"
+  label_head_branch: "Head branch"
+  
+  label_commits: "Commits"
+  label_file_changed: "File changed"
+  
+  field_title: "Title"
+  field_description: "Description"
+  
+  button_send_pull_request: "Send pull request"

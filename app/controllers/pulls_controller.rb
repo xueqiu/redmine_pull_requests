@@ -26,31 +26,36 @@ class PullsController < ApplicationController
     
     # diff
     if params[:head_branch].present? and params[:base_branch].present?
-      latest_base_changesets = @repository.latest_changesets('', @base_branch, 1)
-      latest_base_changeset = latest_base_changesets.first.scmid if latest_base_changesets.length > 0
+#      latest_base_changesets = @repository.latest_changesets('', @base_branch, 1)
+#      latest_base_changeset = latest_base_changesets.first.scmid if latest_base_changesets.length > 0
       
       # commits
-      @revision = @repository.branch_ancestor(@base_branch, @head_branch)
-      fl = @revision[0]
-      if(fl != '+' and fl != '-')
+#      @revision = @repository.branch_ancestor(@base_branch, @head_branch)
+#      fl = @revision[0]
+#      if(fl != '+' and fl != '-')
         @path = ''
-        @rev = @revision
+ #       @rev = @revision
+        @rev = @base_branch
         @rev_to = @head_branch
 
         @revisions = @repository.revisions('', @rev, @rev_to)
-        puts @revisions
 
         @diff_type = 'inline'
         @cache_key = "repositories/diff/#{@repository.id}/" +
                         Digest::MD5.hexdigest("#{@path}-#{@rev}-#{@rev_to}-#{@diff_type}-#{current_language}")
         unless read_fragment(@cache_key)
-          @diff = @repository.diff(@path, @rev, @rev_to)
+          #@diff = @repository.diff(@path, @rev_to, @rev)
+          
+          @diff = []
+          @revisions.each do |r|
+            @diff.concat(@repository.diff(@path, r.scmid, nil))
+          end
         end
 
         #@changeset = @repository.find_changeset_by_name(@rev)
         #@changeset_to = @rev_to ? @repository.find_changeset_by_name(@rev_to) : nil
         #@diff_format_revisions = @repository.diff_format_revisions(@changeset, @changeset_to) 
-      end
+#      end
     end      
   end
 

@@ -16,7 +16,7 @@ TODO:
 * auto merge
 
 0.3
-* any commit or between any two commits
+* pull request for any commit or multiple commits
 * redmine hook for revision to pull request
 * verify if there have pull request conflict
 

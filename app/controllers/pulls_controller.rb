@@ -6,7 +6,14 @@ class PullsController < ApplicationController
   before_filter :find_repository, :only => [:new, :edit, :create, :update]
 
   def index
-    @pulls = Pull.find(:all, :order => 'created_on DESC')
+    @limit = per_page_option
+    
+    @pulls_count = @project.pulls.size
+    @pulls_pages = Paginator.new(self, @pulls_count, @limit, params[:page])
+    @offset ||= @pulls_pages.current.offset
+    
+    @pulls = Pull.find(:all, :conditions => ["project_id = ?", @project.id],
+                       :order => 'created_on DESC', :offset => @offset, :limit => @limit)
   end
   
   def show
@@ -91,7 +98,6 @@ class PullsController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     render_404
   end
-  
   
   def show_diff(repository, base_branch, head_branch)
       @path = ''

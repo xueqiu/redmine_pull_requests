@@ -3,17 +3,18 @@ class PullsController < ApplicationController
   
   #menu_item :pull_requests
   before_filter :find_project
-  before_filter :find_repository
+  before_filter :find_repository, :only => [:new, :edit, :create, :update]
 
   def index
-    @pulls = Pull.find(:all)
+    @pulls = Pull.find(:all, :order => 'created_on DESC')
   end
   
   def show
     @pull = Pull.find(params[:id])
+    @repository = @pull.repository
     @base_branch = @pull.base_branch
     @head_branch = @pull.head_branch
-    show_diff(@base_branch, @head_branch)
+    show_diff(@repository, @base_branch, @head_branch)
   end
 
   def new
@@ -21,11 +22,11 @@ class PullsController < ApplicationController
     @head_branch = params[:head_branch]
 
     @repositories = @project.repositories
-    @repos = @repositories.sort.collect {|repo| repo.name}
+    #@repos = @repositories.sort.collect {|repo| repo.name}
 
     # diff
-    if params[:head_branch].present? and params[:base_branch].present?
-      show_diff(@base_branch, @head_branch)
+    if @head_branch.present? and @base_branch.present?
+      show_diff(@repository, @base_branch, @head_branch)
     end
   end
 
@@ -35,16 +36,37 @@ class PullsController < ApplicationController
     @pull.user = User.current
     if @pull.save
       flash[:notice] = l(:notice_pull_created)
-      redirect_to :action => 'show', :project_id => @project.name, :repository_id => @pull.repository.name, :id => @pull.id
+      redirect_to :action => 'show', :project_id => @project.name, :id => @pull.id
     else
-      render(params[:fork].blank? ? :new : :edit)
+      render :new
     end
   end
 
   def edit
+    @pull = Pull.find(params[:id])
+    @repository = params[:repository_id].present? ? @repository : @pull.repository
+    @base_branch = params[:base_branch].present? ? params[:base_branch] : @pull.base_branch
+    @head_branch = params[:head_branch].present? ? params[:head_branch] : @pull.head_branch
+
+    @repositories = @project.repositories
+    #@repos = @repositories.sort.collect {|repo| repo.name}
+
+    # diff
+    if @head_branch.present? and @base_branch.present?
+      show_diff(@repository, @base_branch, @head_branch)
+    end    
   end
   
   def update
+    @pull = Pull.find(params[:id])
+    @pull.repository = @repository
+    @pull.user = User.current
+    if @pull.update_attributes(params[:pull])
+      flash[:notice] = l(:notice_pull_updated)
+      redirect_to :action => 'show', :project_id => @project.name, :id => @pull.id
+    else
+      render :edit
+    end
   end
   
   def destroy
@@ -71,12 +93,12 @@ class PullsController < ApplicationController
   end
   
   
-  def show_diff(base_branch, head_branch)
+  def show_diff(repository, base_branch, head_branch)
       @path = ''
       @rev = base_branch
       @rev_to = head_branch
 
-      @revisions = @repository.revisions('', @rev, @rev_to)
+      @revisions = repository.revisions('', @rev, @rev_to)
 
       @diff_type = 'inline'
       @cache_key = "repositories/diff/#{@repository.id}/" +

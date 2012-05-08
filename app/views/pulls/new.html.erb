@@ -14,60 +14,9 @@ label {
 <h2><%= title %></h2>
 
 <% labelled_form_for :pull, :url => { :action => "create", :project_id => @project.name } do |f| %>
-<div class="box">
-<p>
-<label>Repository</label>
-<% if !@repositories.nil? && @repositories.length > 0 -%>
-<%= select_tag :repository_id,
-               options_for_select(@repos, @repository.id), :id => 'pull_repository_id',
-			   			 :onchange => "window.location.replace('#{url_for(:controller => 'pulls', :action => 'new')}?repository_id=' + this.options[this.selectedIndex].value)", :name => "pull[repository_id]" %>
-<% end -%>
 
-<%= l(:label_base_branch) %> 
-<% if !@repository.branches.nil? && @repository.branches.length > 0 -%>
-  <%= select_tag :base_branch,
-                 options_for_select([''] + @repository.branches, @base_branch), :id => 'pull_base_branch', 
-								 :onchange => "window.location.replace('#{url_for(:controller => 'pulls', :action => 'new')}?repository_id=#{@repository.name}&base_branch=' + this.options[this.selectedIndex].value + '&head_branch=#{@head_branch}')", :name => "pull[base_branch]"%>
-<% end -%>
-
-<%= l(:label_head_branch) %> 
-<% if !@repository.branches.nil? && @repository.branches.length > 0 -%>
-  <%= select_tag :head_branch,
-                 options_for_select([''] + @repository.branches, @head_branch), :id => 'pull_head_branch',
-								 :onchange => "window.location.replace('#{url_for(:controller => 'pulls', :action => 'new')}?repository_id=#{@repository.name}&head_branch=' + this.options[this.selectedIndex].value + '&base_branch=#{@base_branch}')", :name => "pull[head_branch]"%>
-<% end -%>
-</p>
-
-<p><%= f.text_field :title, :label => :field_title, :size => 78 %></p>
-<p><%= f.text_area :description, :label => :field_description, :rows => 10, :cols => 80 %></p>
-
-<label></label>
-<%= f.submit l(:button_send_pull_request) %>
-</div>
-
-
-<% if params[:head_branch].present? and params[:base_branch].present? %>
-
-<h3><%= l(:label_commits) %></h3>
-<p>
-<% if @revisions %>
-<%= render :partial => 'revisions' %>
-<% end -%>
-</p>
-
-<h3><%= l(:label_file_changed) %></h3>
-<p>
-<%= @diff_format_revisions %> 
-<% cache(@cache_key) do -%>
-<% if @diff %>
-<%= render :partial => 'common/diff', :locals => {:diff => @diff, :diff_type => @diff_type} %>
-<% end -%>
-<% end -%>
-</p>
-<% end -%>
+<%= render :partial => "fields", :locals => { :f => f } %>
 
 <% end -%>
-
-
 
 <%= render "sidebar" %>

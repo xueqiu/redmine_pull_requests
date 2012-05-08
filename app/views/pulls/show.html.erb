@@ -11,32 +11,33 @@ label {
 </style>
 <% end %>
 
-<h2><%= title %></h2>
+
+<div class="contextual">
+<%= link_to(l(:label_edit), {:controller => 'pulls', :action => 'edit', :project_id => @project.name, :id => @pull.id }) %>
+</div>
+
+<h2><%= title %> #<%= @pull.id %></h2>
 
 <div class="box">
+<h3><%= @pull.title %></h3>
 <p>
-<label><%= l(:lable_repository) %></label>
+<label><%= l(:lable_repository) %>:</label>
 <span><%= @pull.repository.name %></span>
 </p>
 
 <p>
-<label><%= l(:label_base_branch) %></label>
+<label><%= l(:label_base_branch) %>:</label>
 <span><%= @pull.base_branch %></span>
 </p>
 
 <p>
-<label><%= l(:label_head_branch) %></label>
+<label><%= l(:label_head_branch) %>:</label>
 <span><%= @pull.head_branch %></span>
 </p>
 
 <p>
-<label><%= l(:field_title) %></label>
-<span><%= @pull.title %></span>
-</p>
-
-<p>
 <label><%= l(:field_description) %></label>
-<span><%= @pull.description %></span>
+<div><%= textilizable @pull.description %></div>
 </p>
 
 </div>

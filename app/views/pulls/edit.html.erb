@@ -1,1 +1,24 @@
-<h2>Pulls#edit</h2>
+<% title = l(:label_pull_request_edit) %>
+
+<% html_title title %>
+
+<% content_for :header_tags do %>
+<%= stylesheet_link_tag 'scm' %>
+<style>
+label {
+	width: 70px; display: inline-block; vertical-align: top;
+}
+</style>
+<% end %>
+
+<h2><%= title %></h2>
+
+<% labelled_form_for :pull, @pull,
+										 :url => { :action => "update", :project_id => @project.name, :id => @pull },
+										 :html => { :method => :put } do |f| %>
+
+<%= render :partial => "fields", :locals => { :f => f } %>
+
+<% end -%>
+
+<%= render "sidebar" %>

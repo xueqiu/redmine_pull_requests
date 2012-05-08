@@ -23,3 +23,5 @@ en:
   
   notice_pull_created: "Pull request created"
   notice_pull_updated: "Pull request updated"
+  notice_pull_create_failed: "Pull request create failed"
+  notice_pull_update_failed: "Pull request update failed"

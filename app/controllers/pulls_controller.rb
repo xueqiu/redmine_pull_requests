@@ -29,7 +29,6 @@ class PullsController < ApplicationController
     @head_branch = params[:head_branch]
 
     @repositories = @project.repositories
-    #@repos = @repositories.sort.collect {|repo| repo.name}
 
     # diff
     if @head_branch.present? and @base_branch.present?
@@ -45,6 +44,7 @@ class PullsController < ApplicationController
       flash[:notice] = l(:notice_pull_created)
       redirect_to :action => 'show', :project_id => @project.name, :id => @pull.id
     else
+      flash[:error] = l(:notice_pull_create_failed)
       render :new
     end
   end
@@ -72,6 +72,7 @@ class PullsController < ApplicationController
       flash[:notice] = l(:notice_pull_updated)
       redirect_to :action => 'show', :project_id => @project.name, :id => @pull.id
     else
+      flash[:error] = l(:notice_pull_update_failed)
       render :edit
     end
   end

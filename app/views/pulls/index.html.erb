@@ -21,7 +21,7 @@
 <% @pulls.each do |pull| %>
 <tr class="pull <%= cycle 'odd', 'even' %>">
 <td class="id"><%= pull.id %></td>
-<td class="title"><%= link_to(pull.title, {:controller => 'pulls', :action => 'show', :project_id => @project.name, :id => pull.id }) %></td>
+<td class="title"><%= link_to(pull.subject, {:controller => 'pulls', :action => 'show', :project_id => @project.name, :id => pull.id }) %></td>
 <td class="user"><%= h truncate(pull.user.to_s, :length => 30) %></td>
 <td class="base_branch"><%= pull[:base_branch] %></td>
 <td class="head_branch"><%= pull[:head_branch] %></td>

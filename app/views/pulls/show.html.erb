@@ -13,13 +13,16 @@ label {
 
 
 <div class="contextual">
-<%= link_to(l(:label_edit), {:controller => 'pulls', :action => 'edit', :project_id => @project.name, :id => @pull.id }) %>
+<%= link_to_if_authorized(l(:label_edit), {:controller => 'pulls', :action => 'edit', :project_id => @project.name, :id => @pull.id },
+                             :class => 'icon icon-edit', :accesskey => accesskey(:edit)) %>
 </div>
 
 <h2><%= title %> #<%= @pull.id %></h2>
 
 <div class="box">
+<% if @pull.title.present? %>
 <h3><%= @pull.title %></h3>
+<% end -%>
 <p>
 <label><%= l(:lable_repository) %>:</label>
 <span><%= @pull.repository.name %></span>

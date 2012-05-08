@@ -8,12 +8,29 @@
 
 <h2><%=h title %></h2>
 
+<table class="list changesets">
+<thead><tr>
+<th>#</th>
+<th><%= l(:field_title) %></th>
+<th><%= l(:field_user) %></th>
+<th><%= l(:label_base_branch) %></th>
+<th><%= l(:label_head_branch) %></th>
+<th><%= l(:field_created) %></th>
+</tr></thead>
+<tbody>
 <% @pulls.each do |pull| %>
-  <p>
-  <%= pull[:title] %>
-  <%= pull[:base_branch] %>
-  <%= pull[:head_branch] %>
-  </p>
+<tr class="pull <%= cycle 'odd', 'even' %>">
+<td class="id"><%= pull.id %></td>
+<td class="title"><%= link_to(pull.title, {:controller => 'pulls', :action => 'show', :project_id => @project.name, :repository_id => pull.repository.name, :id => pull.id }) %></td>
+<td class="user"><%= h truncate(pull.user.to_s, :length => 30) %></td>
+<td class="base_branch"><%= pull[:base_branch] %></td>
+<td class="head_branch"><%= pull[:head_branch] %></td>
+<td class="created_on"><%= format_time(pull.created_on) %></td>
+</tr>
 <% end %>
+</tbody>
+</table>
+
+
 
 <%= render "sidebar" %>

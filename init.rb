@@ -2,13 +2,23 @@ require 'redmine'
 require 'dispatcher'
 
 require_dependency 'redmine_pull_requests/view_hooks'
+require_dependency 'redmine_pull_requests/project_patch'
 require_dependency 'redmine_pull_requests/repository_git_patch'
 
 Dispatcher.to_prepare :redmine_pull_requests do
+  require_dependency 'project'
   require_dependency 'repository'
 
-  unless Repository::Git.included_modules.include? RedminePullRequests::RepositoryPatch
+  unless Project.included_modules.include? RedminePullRequests::ProjectPatch
+    Project.send(:include, RedminePullRequests::ProjectPatch)
+  end
+
+  unless Repository.included_modules.include? RedminePullRequests::RepositoryPatch
     Repository.send(:include, RedminePullRequests::RepositoryPatch)
+  end
+
+  unless Repository::Git.included_modules.include? RedminePullRequests::RepositoryGitPatch
+    Repository.send(:include, RedminePullRequests::RepositoryGitPatch)
   end
 end
 

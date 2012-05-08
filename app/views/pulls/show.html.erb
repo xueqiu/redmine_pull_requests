@@ -1,3 +1,68 @@
-<h2>Pulls#show</h2>
+<% title = l(:label_pull_request_show) %>
+
+<% html_title title %>
+
+<% content_for :header_tags do %>
+<%= stylesheet_link_tag 'scm' %>
+<style>
+label {
+	width: 100px; display: inline-block; vertical-align: top; font-weight: bold;
+}
+</style>
+<% end %>
+
+<h2><%= title %></h2>
+
+<div class="box">
+<p>
+<label><%= l(:lable_repository) %></label>
+<span><%= @pull.repository.name %></span>
+</p>
+
+<p>
+<label><%= l(:label_base_branch) %></label>
+<span><%= @pull.base_branch %></span>
+</p>
+
+<p>
+<label><%= l(:label_head_branch) %></label>
+<span><%= @pull.head_branch %></span>
+</p>
+
+<p>
+<label><%= l(:field_title) %></label>
+<span><%= @pull.title %></span>
+</p>
+
+<p>
+<label><%= l(:field_description) %></label>
+<span><%= @pull.description %></span>
+</p>
+
+</div>
+
+
+<% if @base_branch and @head_branch %>
+
+<h3><%= l(:label_commits) %></h3>
+<p>
+<% if @revisions %>
+<%= render :partial => 'revisions' %>
+<% end -%>
+</p>
+
+<h3><%= l(:label_file_changed) %></h3>
+<p>
+<%= @diff_format_revisions %> 
+<% cache(@cache_key) do -%>
+<% if @diff %>
+<%= render :partial => 'common/diff', :locals => {:diff => @diff, :diff_type => @diff_type} %>
+<% end -%>
+<% end -%>
+</p>
+
+<% end -%>
+
+
 
 <%= render "sidebar" %>

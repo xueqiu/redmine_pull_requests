@@ -1,5 +1,5 @@
 module RedminePullRequests
-  module RepositoryPatch
+  module RepositoryGitPatch
     
     def self.included(base)
       #base.extend(ClassMethods)

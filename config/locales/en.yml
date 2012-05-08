@@ -1,8 +1,10 @@
 # English strings go here for Rails i18n
 en:
+  lable_repository: "Repository"
   label_pull_requests: "Pull requests"
   label_pull_requests_view: "View pull requests"
   label_pull_request_new: "New pull request"
+  label_pull_request_show: "Pull request"
   
   label_base_branch: "Base branch"
   label_head_branch: "Head branch"
@@ -11,6 +13,10 @@ en:
   label_file_changed: "File changed"
   
   field_title: "Title"
+  field_created: "Created"
+  field_user: "User"
   field_description: "Description"
   
   button_send_pull_request: "Send pull request"
+  
+  notice_pull_created: "Pull request created"

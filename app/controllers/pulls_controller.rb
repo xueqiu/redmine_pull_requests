@@ -6,14 +6,15 @@ class PullsController < ApplicationController
   before_filter :find_repository, :only => [:new, :edit, :create, :update]
 
   def index
-    @limit = per_page_option
+    @status = params[:status].present? ? params[:status] : "open"
     
-    @pulls_count = @project.pulls.size
+    @limit = per_page_option
+    @pulls_count = @project.pulls.with_status(@status).count
     @pulls_pages = Paginator.new(self, @pulls_count, @limit, params[:page])
     @offset ||= @pulls_pages.current.offset
     
-    @pulls = Pull.find(:all, :conditions => ["project_id = ?", @project.id],
-                       :order => 'created_on DESC', :offset => @offset, :limit => @limit)
+    @pulls = @project.pulls.find(:all, :conditions => ["status = ?", @status],
+                                 :order => 'created_on DESC', :offset => @offset, :limit => @limit)
   end
   
   def show
@@ -75,6 +76,26 @@ class PullsController < ApplicationController
       flash[:error] = l(:notice_pull_update_failed)
       render :edit
     end
+  end
+  
+  def close
+    @pull = Pull.find(params[:id])
+    if @pull.update_attributes(:status => "closed")
+      flash[:notice] = l(:notice_pull_closed)
+    else
+      flash[:error] = l(:notice_pull_close_failed)
+    end
+    redirect_to :action => 'show', :project_id => @project.name, :id => @pull.id
+  end
+
+  def cancel
+    @pull = Pull.find(params[:id])
+    if @pull.update_attributes(:status => "canceled")
+      flash[:notice] = l(:notice_pull_canceled)
+    else
+      flash[:error] = l(:notice_pull_cancel_failed)
+    end
+    redirect_to :action => 'show', :project_id => @project.name, :id => @pull.id
   end
   
   def destroy

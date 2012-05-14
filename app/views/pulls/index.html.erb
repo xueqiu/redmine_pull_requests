@@ -6,11 +6,21 @@
 <%= stylesheet_link_tag 'scm' %>
 <% end %>
 
+<div class="contextual">
+<%= link_to_if_authorized(l(:label_open), {:controller => 'pulls', :action => 'index', :project_id => @project.name, :status => "open" },
+                            :class => 'icon icon-copy') %>
+<%= link_to_if_authorized(l(:label_closed), {:controller => 'pulls', :action => 'index', :project_id => @project.name, :status => "closed" },
+														:class => 'icon icon-history') %>
+<%= link_to_if_authorized(l(:label_canceled), {:controller => 'pulls', :action => 'index', :project_id => @project.name, :status => "canceled" },
+														:class => 'icon icon-del') %>
+</div>
+
 <h2><%=h title %></h2>
 
 <table class="list changesets">
 <thead><tr>
 <th>#</th>
+<th><%= l(:label_status) %></th>
 <th><%= l(:field_title) %></th>
 <th><%= l(:field_user) %></th>
 <th><%= l(:label_base_branch) %></th>
@@ -19,9 +29,10 @@
 </tr></thead>
 <tbody>
 <% @pulls.each do |pull| %>
-<tr class="pull <%= cycle 'odd', 'even' %>">
+<tr class="pull <%= cycle 'odd', 'even' %> issue">
 <td class="id"><%= pull.id %></td>
-<td class="title"><%= link_to(pull.subject, {:controller => 'pulls', :action => 'show', :project_id => @project.name, :id => pull.id }) %></td>
+<td class="status"><%= pull[:status].camelize %></td>
+<td class="subject"><%= link_to(pull.subject, {:controller => 'pulls', :action => 'show', :project_id => @project.name, :id => pull.id }) %></td>
 <td class="user"><%= h truncate(pull.user.to_s, :length => 30) %></td>
 <td class="base_branch"><%= pull[:base_branch] %></td>
 <td class="head_branch"><%= pull[:head_branch] %></td>

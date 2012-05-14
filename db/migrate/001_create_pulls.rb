@@ -8,7 +8,7 @@ class CreatePulls < ActiveRecord::Migration
         t.integer "user_id", :null => false
         t.string "title", :limit => 60, :default => ""
         t.text "description", :null => false
-        t.string   "status", :default => "open" # open / closed
+        t.string   "status", :default => "open" # open / closed / canceled
         t.datetime "created_on", :null => false
         t.datetime "updated_on", :null => false
     end

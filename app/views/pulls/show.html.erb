@@ -11,11 +11,15 @@ label {
 </style>
 <% end %>
 
+<% closed = @pull.status != "open" ? true : false %>
 
+
+<% if closed %>
 <div class="contextual">
 <%= link_to_if_authorized(l(:label_edit), {:controller => 'pulls', :action => 'edit', :project_id => @project.name, :id => @pull.id },
-                             :class => 'icon icon-edit', :accesskey => accesskey(:edit)) %>
+                            :class => 'icon icon-edit', :accesskey => accesskey(:edit)) %>												
 </div>
+<% end -%>
 
 <h2><%= title %> #<%= @pull.id %></h2>
 
@@ -23,8 +27,14 @@ label {
 <% if @pull.title.present? %>
 <h3><%= @pull.title %></h3>
 <% end -%>
+
 <p>
-<label><%= l(:lable_repository) %>:</label>
+<label><%= l(:label_status) %>:</label>
+<span><%= @pull.status.camelize %></span>
+</p>
+
+<p>
+<label><%= l(:label_repository) %>:</label>
 <span><%= @pull.repository.name %></span>
 </p>
 
@@ -45,6 +55,15 @@ label {
 
 </div>
 
+<p>
+<% labelled_form_for :pull, :url => { :action => "close", :project_id => @project.name }, :html => { :method => :put } do |f| %>
+<%= f.submit l(:button_close_pull_request), :disabled => closed %>
+<% end -%>
+
+<% labelled_form_for :pull, :url => { :action => "cancel", :project_id => @project.name }, :html => { :method => :put } do |f| %>
+<%= f.submit l(:button_cancel_pull_request), :disabled => closed %>
+<% end -%>
+</p>
 
 <% if @base_branch and @head_branch %>
 

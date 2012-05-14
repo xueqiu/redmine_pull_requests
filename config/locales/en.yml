@@ -1,15 +1,19 @@
 # English strings go here for Rails i18n
 en:
-  lable_repository: "Repository"
+  label_repository: "Repository"
   label_pull_requests: "Pull requests"
   label_pull_requests_view: "View pull requests"
   label_pull_request_new: "New pull request"
   label_pull_request_edit: "Edit pull request"
   label_pull_request_show: "Pull request"
   
+  label_status: "Status"
   label_base_branch: "Base branch"
   label_head_branch: "Head branch"
   
+  label_open: "Open"
+  label_closed: "Closed"
+  label_canceled: "Canceled"
   label_edit: "Edit"
   label_commits: "Commits"
   label_file_changed: "File changed"
@@ -20,8 +24,14 @@ en:
   field_description: "Description"
   
   button_send_pull_request: "Send pull request"
+  button_close_pull_request: "Close pull request"
+  button_cancel_pull_request: "Cancel pull request"
   
   notice_pull_created: "Pull request created"
   notice_pull_updated: "Pull request updated"
+  notice_pull_closed: "Pull request closed"
+  notice_pull_canceled: "Pull request canceled"
   notice_pull_create_failed: "Pull request create failed"
   notice_pull_update_failed: "Pull request update failed"
+  notice_pull_close_failed: "Pull request close failed"
+  notice_pull_cancel_failed: "Pull request cancel failed"  

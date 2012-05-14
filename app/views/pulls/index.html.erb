@@ -8,7 +8,7 @@
 
 <div class="contextual">
 <%= link_to_if_authorized(l(:label_open), {:controller => 'pulls', :action => 'index', :project_id => @project.identifier, :status => "open" },
-                            :class => 'icon icon-copy') %>
+                            :class => 'icon icon-duplicate') %>
 <%= link_to_if_authorized(l(:label_closed), {:controller => 'pulls', :action => 'index', :project_id => @project.identifier, :status => "closed" },
 														:class => 'icon icon-lock') %>
 <%= link_to_if_authorized(l(:label_canceled), {:controller => 'pulls', :action => 'index', :project_id => @project.identifier, :status => "canceled" },
@@ -23,6 +23,7 @@
 <th><%= l(:label_status) %></th>
 <th><%= l(:field_title) %></th>
 <th><%= l(:field_user) %></th>
+<th><%= l(:label_repository) %></th>
 <th><%= l(:label_base_branch) %></th>
 <th><%= l(:label_head_branch) %></th>
 <th><%= l(:field_created) %></th>
@@ -34,8 +35,9 @@
 <td class="status"><%= pull[:status].camelize %></td>
 <td class="subject"><%= link_to(pull.subject, {:controller => 'pulls', :action => 'show', :project_id => @project.identifier, :id => pull.id }) %></td>
 <td class="user"><%= h truncate(pull.user.to_s, :length => 30) %></td>
-<td class="base_branch"><%= pull[:base_branch] %></td>
-<td class="head_branch"><%= pull[:head_branch] %></td>
+<td class="repository"><%= pull.repository.name %></td>
+<td class="base_branch"><%= pull.base_branch %></td>
+<td class="head_branch"><%= pull.head_branch %></td>
 <td class="created_on"><%= format_time(pull.created_on) %></td>
 </tr>
 <% end %>

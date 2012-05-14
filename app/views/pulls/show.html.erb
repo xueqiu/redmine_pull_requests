@@ -16,7 +16,7 @@ label {
 
 <% if closed %>
 <div class="contextual">
-<%= link_to_if_authorized(l(:label_edit), {:controller => 'pulls', :action => 'edit', :project_id => @project.name, :id => @pull.id },
+<%= link_to_if_authorized(l(:label_edit), {:controller => 'pulls', :action => 'edit', :project_id => @project.identifier, :id => @pull.id },
                             :class => 'icon icon-edit', :accesskey => accesskey(:edit)) %>												
 </div>
 <% end -%>
@@ -56,11 +56,11 @@ label {
 </div>
 
 <p>
-<% labelled_form_for :pull, :url => { :action => "close", :project_id => @project.name }, :html => { :method => :put } do |f| %>
+<% labelled_form_for :pull, :url => { :action => "close", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
 <%= f.submit l(:button_close_pull_request), :disabled => closed %>
 <% end -%>
 
-<% labelled_form_for :pull, :url => { :action => "cancel", :project_id => @project.name }, :html => { :method => :put } do |f| %>
+<% labelled_form_for :pull, :url => { :action => "cancel", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
 <%= f.submit l(:button_cancel_pull_request), :disabled => closed %>
 <% end -%>
 </p>

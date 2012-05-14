@@ -43,7 +43,7 @@ class PullsController < ApplicationController
     @pull.user = User.current
     if @pull.save
       flash[:notice] = l(:notice_pull_created)
-      redirect_to :action => 'show', :project_id => @project.name, :id => @pull.id
+      redirect_to :action => 'show', :project_id => @project.identifier, :id => @pull.id
     else
       flash[:error] = l(:notice_pull_create_failed)
       render :new
@@ -71,7 +71,7 @@ class PullsController < ApplicationController
     @pull.user = User.current
     if @pull.update_attributes(params[:pull])
       flash[:notice] = l(:notice_pull_updated)
-      redirect_to :action => 'show', :project_id => @project.name, :id => @pull.id
+      redirect_to :action => 'show', :project_id => @project.identifier, :id => @pull.id
     else
       flash[:error] = l(:notice_pull_update_failed)
       render :edit
@@ -85,7 +85,7 @@ class PullsController < ApplicationController
     else
       flash[:error] = l(:notice_pull_close_failed)
     end
-    redirect_to :action => 'show', :project_id => @project.name, :id => @pull.id
+    redirect_to :action => 'show', :project_id => @project.identifier, :id => @pull.id
   end
 
   def cancel
@@ -95,7 +95,7 @@ class PullsController < ApplicationController
     else
       flash[:error] = l(:notice_pull_cancel_failed)
     end
-    redirect_to :action => 'show', :project_id => @project.name, :id => @pull.id
+    redirect_to :action => 'show', :project_id => @project.identifier, :id => @pull.id
   end
   
   def destroy

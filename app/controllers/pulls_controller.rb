@@ -132,7 +132,7 @@ class PullsController < ApplicationController
         @cache_key = "repositories/diff/#{@repository.id}/" +
                      Digest::MD5.hexdigest("#{@path}-#{@revisions}-#{@diff_type}-#{current_language}")
         unless read_fragment(@cache_key)
-          @diff = @repository.diff(@path, "#{@rev_to}", "#{@rev}...")
+          @diff = @repository.diff_with_three_dot(@path, @rev_to, @rev)
         
   #        @diff = []
   #        @revisions.each do |r|

@@ -3,11 +3,13 @@ require 'dispatcher'
 
 require_dependency 'redmine_pull_requests/view_hooks'
 require_dependency 'redmine_pull_requests/project_patch'
-require_dependency 'redmine_pull_requests/repository_git_patch'
+require_dependency 'redmine_pull_requests/repository_patch'
+require_dependency 'redmine_pull_requests/git_adapter_patch'
 
 Dispatcher.to_prepare :redmine_pull_requests do
   require_dependency 'project'
   require_dependency 'repository'
+  require_dependency 'redmine/scm/adapters/git_adapter'
 
   unless Project.included_modules.include? RedminePullRequests::ProjectPatch
     Project.send(:include, RedminePullRequests::ProjectPatch)
@@ -17,8 +19,8 @@ Dispatcher.to_prepare :redmine_pull_requests do
     Repository.send(:include, RedminePullRequests::RepositoryPatch)
   end
 
-  unless Repository::Git.included_modules.include? RedminePullRequests::RepositoryGitPatch
-    Repository.send(:include, RedminePullRequests::RepositoryGitPatch)
+  unless Redmine::Scm::Adapters::GitAdapter.included_modules.include? RedminePullRequests::GitAdapterPatch
+    Redmine::Scm::Adapters::GitAdapter.send(:include, RedminePullRequests::GitAdapterPatch)
   end
 end
 

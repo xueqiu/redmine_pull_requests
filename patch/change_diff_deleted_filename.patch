@@ -1,0 +1,27 @@
+From fca01b61cdf85d758cf29eb7e00b97d315999362 Mon Sep 17 00:00:00 2001
+From: pawa <pawamaba@gmail.com>
+Date: Tue, 15 May 2012 15:03:52 +0800
+Subject: Change diff deleted filename /dev/null to it's real name
+
+---
+ lib/redmine/unified_diff.rb |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lib/redmine/unified_diff.rb b/lib/redmine/unified_diff.rb
+index b634813..f325b1f 100644
+--- a/lib/redmine/unified_diff.rb
++++ b/lib/redmine/unified_diff.rb
+@@ -71,8 +71,8 @@ module Redmine
+     # Returns false when the diff ends
+     def add_line(line)
+       unless @parsing
+-        if line =~ /^(---|\+\+\+) (.*)$/
+-          @file_name = $2
++        if line =~ /^(--- a\/|--- |\+\+\+ b\/|\+\+\+ )(.*)$/
++          @file_name = $2 if $2 != "/dev/null"
+         elsif line =~ /^@@ (\+|\-)(\d+)(,\d+)? (\+|\-)(\d+)(,\d+)? @@/
+           @line_num_l = $2.to_i
+           @line_num_r = $5.to_i
+-- 
+1.7.5.4
+

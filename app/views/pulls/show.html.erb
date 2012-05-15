@@ -13,14 +13,6 @@ label {
 
 <% closed = @pull.status != "open" ? true : false %>
 
-
-<% if closed %>
-<div class="contextual">
-<%= link_to_if_authorized(l(:label_edit), {:controller => 'pulls', :action => 'edit', :project_id => @project.identifier, :id => @pull.id },
-                            :class => 'icon icon-edit', :accesskey => accesskey(:edit)) %>												
-</div>
-<% end -%>
-
 <h2><%= title %> #<%= @pull.id %></h2>
 
 <div class="box">

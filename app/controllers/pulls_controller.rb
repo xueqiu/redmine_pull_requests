@@ -127,14 +127,17 @@ class PullsController < ApplicationController
       @rev_to = head_branch
 
       @revisions = repository.revisions('', @rev, @rev_to)
-
-      @diff_type = 'inline'
-      @cache_key = "repositories/diff/#{@repository.id}/" +
-                      Digest::MD5.hexdigest("#{@path}-#{@revisions}-#{@diff_type}-#{current_language}")
-      unless read_fragment(@cache_key)
-        @diff = []
-        @revisions.each do |r|
-          @diff.concat(@repository.diff(@path, r.scmid, nil))
+      if @revisions.size > 0
+        @diff_type = 'inline'
+        @cache_key = "repositories/diff/#{@repository.id}/" +
+                     Digest::MD5.hexdigest("#{@path}-#{@revisions}-#{@diff_type}-#{current_language}")
+        unless read_fragment(@cache_key)
+          @diff = @repository.diff(@path, @rev_to, @rev)
+        
+  #        @diff = []
+  #        @revisions.each do |r|
+  #          @diff.concat(@repository.diff(@path, r.scmid, nil))
+  #        end
         end
       end
   end

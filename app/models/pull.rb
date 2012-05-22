@@ -5,6 +5,8 @@ class Pull < ActiveRecord::Base
   belongs_to :project
   belongs_to :repository
   
+  has_many :items, :class_name => "PullItem"
+  
   validates_presence_of :repository_id, :base_branch, :head_branch
 
   named_scope :with_status, lambda { |status|

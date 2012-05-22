@@ -29,6 +29,10 @@ module RedminePullRequests
     def diff_with_merge_base(path, rev, rev_to)
       scm.diff_with_merge_base(path, rev, rev_to)
     end 
+
+    def merge_conflict?(rev, rev_to)
+      scm.merge_conflict?(rev, rev_to)
+    end 
             
   end
 end

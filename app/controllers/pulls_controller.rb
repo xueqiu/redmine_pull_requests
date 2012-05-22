@@ -42,8 +42,12 @@ class PullsController < ApplicationController
           end
         end
         
-        @diff = (diff_item.present? and diff_item.item_type == 'diff') ? diff_item.content.split('$$$$$') : ""
         @revisions = Changeset.find(:all, :conditions => ["scmid IN (?)",commits], :order => 'committed_on')
+        @cache_key = "repositories/diff/#{@repository.id}/" +
+                     Digest::MD5.hexdigest("#{@path}-#{@revisions}-#{@diff_type}-#{current_language}")
+        unless read_fragment(@cache_key)        
+          @diff = (diff_item.present? and diff_item.item_type == 'diff') ? diff_item.content.split('$$$$$') : ""
+        end
       end
     end
   end

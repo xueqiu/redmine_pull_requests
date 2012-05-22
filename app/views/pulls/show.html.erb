@@ -59,6 +59,24 @@ label {
 
 <% if @base_branch and @head_branch %>
 
+<% if @statuses %>
+<h3><%= l(:label_status) %></h3>
+<p>
+<table class="list changesets">
+<tbody>
+<% @statuses.each do |status| %>
+<% if status.item_type != "comment" %>
+<tr class="pull_item <%= cycle 'odd', 'even' %>">
+<td class="content"><label><%= h truncate(status.user.to_s) %></label> <%= status.item_type %> the pull request #<%= @pull.id %></td>
+<td class="created_on"><%= format_time(status.created_on) %></td>
+</tr>
+<% end -%>
+<% end -%>
+</tbody>
+</table>
+</p>
+<% end -%>
+
 <h3><%= l(:label_commits) %></h3>
 <p>
 <% if @revisions %>

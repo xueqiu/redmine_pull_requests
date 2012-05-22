@@ -13,7 +13,7 @@ module RedminePullRequests
     end    
     
     module InstanceMethods
-      def diff_with_three_dot(path, identifier_from, identifier_to=nil)
+      def diff_with_merge_base(path, identifier_from, identifier_to=nil)
         path ||= ''
         cmd_args = []
         if identifier_to

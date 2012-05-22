@@ -21,13 +21,13 @@ module RedminePullRequests
             "scmid IN (?)",
             revisions.map!{|c| c.scmid}
           ],
-          :order => 'committed_on DESC'
+          :order => 'committed_on'
         )
       end
     end
     
-    def diff_with_three_dot(path, rev, rev_to)
-      scm.diff_with_three_dot(path, rev, rev_to)
+    def diff_with_merge_base(path, rev, rev_to)
+      scm.diff_with_merge_base(path, rev, rev_to)
     end 
             
   end

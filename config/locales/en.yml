@@ -15,6 +15,7 @@ en:
   label_closed: "Closed"
   label_canceled: "Canceled"
   label_edit: "Edit"
+  label_status: "Status"
   label_commits: "Commits"
   label_file_changed: "File changed"
   

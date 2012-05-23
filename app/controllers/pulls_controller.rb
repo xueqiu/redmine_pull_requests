@@ -25,6 +25,23 @@ class PullsController < ApplicationController
     
     if @pull.status == "open"
       find_diff(@repository, @base_branch, @head_branch)
+      
+      # if there are new commits, save commits and update diff
+      rev_count = @revisions.length
+      item_count = @pull.items.length-1
+      if rev_count > item_count 
+        if @diff.present?
+          diff_item = @pull.items.first
+          diff_item.update_attributes(:content => @diff.join('$$$$$')) if diff_item.item_type == 'diff'
+        end
+        
+        revs = @revisions[item_count, rev_count-item_count]
+        revs.each do |r|
+          PullItem.create(:pull_id => @pull.id, :item_type => "commit", 
+                          :revision => r.scmid, :user_id => r.user_id)
+        end        
+      end
+      
       @merge_conflict = @repository.merge_conflict?(@base_branch, @head_branch)
     else
       items = @pull.items

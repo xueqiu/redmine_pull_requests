@@ -8,7 +8,7 @@ CACHED_GIT_PATH=/tmp/$4
 # create tmp git working path
 if [ ! -d $CACHED_GIT_PATH ]
 then
-	mkdir $CACHED_GIT_PATH
+	mkdir -p $CACHED_GIT_PATH
 	git clone $GIT_PATH $CACHED_GIT_PATH
 fi	
 

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+GIT_PATH=$1
+BASE_BRANCH=$2
+HEAD_BRANCH=$3
+CACHED_GIT_PATH=/tmp/$4
+
+# create tmp git working path
+if [ ! -d $CACHED_GIT_PATH ]
+then
+	mkdir $CACHED_GIT_PATH
+	git clone $GIT_PATH $CACHED_GIT_PATH
+fi	
+
+cd $CACHED_GIT_PATH
+git fetch --all
+git pull --all
+git checkout $HEAD_BRANCH
+git pull origin $HEAD_BRANCH
+git checkout $BASE_BRANCH
+git pull origin $BASE_BRANCH
+git merge --no-ff $BASE_BRANCH $HEAD_BRANCH
+git push origin $BASE_BRANCH

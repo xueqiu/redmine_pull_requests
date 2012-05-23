@@ -10,6 +10,8 @@ ActionController::Routing::Routes.draw do |map|
                         :action => 'edit'
       pull_view.connect 'projects/:project_id/pull/:id', 
                         :action => 'update', :conditions => {:method => :put}
+      pull_view.connect 'projects/:project_id/pull/:id/merge', 
+                        :action => 'merge', :conditions => {:method => :put}
       pull_view.connect 'projects/:project_id/pull/:id/close', 
                         :action => 'close', :conditions => {:method => :put}
       pull_view.connect 'projects/:project_id/pull/:id/cancel', 

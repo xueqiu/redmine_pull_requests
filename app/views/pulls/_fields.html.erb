@@ -22,13 +22,17 @@
 <% end -%>
 </p>
 
-<p><%= f.text_field :title, :label => :field_title, :size => 78 %></p>
+<p><%= f.text_field :title, :label => :field_title, :size => 77 %></p>
 <p><%= f.text_area :description, :label => :field_description, :rows => 10, :cols => 80 %></p>
 
 <label></label>
-<%= f.submit l(:button_send_pull_request) %>
+
 </div>
 
+<p>
+<% disable = (@revisions and @revisions.length > 0) ? false : true %>
+<%= f.submit l(:button_send_pull_request), :disabled => disable %>
+</p>
 
 <% if @head_branch.present? and @base_branch.present? %>
 

@@ -33,6 +33,10 @@ module RedminePullRequests
     def merge_conflict?(rev, rev_to)
       scm.merge_conflict?(rev, rev_to)
     end 
+
+    def merge(rev, rev_to)
+      scm.merge(name, rev, rev_to)
+    end 
             
   end
 end

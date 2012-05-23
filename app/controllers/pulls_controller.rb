@@ -25,6 +25,7 @@ class PullsController < ApplicationController
     
     if @pull.status == "open"
       find_diff(@repository, @base_branch, @head_branch)
+      @merge_conflict = @repository.merge_conflict?(@base_branch, @head_branch)
     else
       items = @pull.items
       if items.length > 0
@@ -41,7 +42,6 @@ class PullsController < ApplicationController
             @statuses << i
           end
         end
-        
         @revisions = Changeset.find(:all, :conditions => ["scmid IN (?)",commits], :order => 'committed_on')
         @cache_key = "repositories/diff/#{@repository.id}/" +
                      Digest::MD5.hexdigest("#{@path}-#{@revisions}-#{@diff_type}-#{current_language}")
@@ -119,6 +119,20 @@ class PullsController < ApplicationController
     redirect_to :action => 'show', :project_id => @project.identifier, :id => @pull.id
   end
 
+  def merge
+    @pull = Pull.find(params[:id])
+    if @pull.update_attributes(:status => "closed")
+      @pull.repository.merge(@pull.base_branch, @pull.head_branch)
+      @pull.items.create(:item_type => "reviewed", :user_id => User.current.id)
+      @pull.items.create(:item_type => "merged", :user_id => User.current.id)
+      @pull.items.create(:item_type => "closed", :user_id => User.current.id)
+      flash[:notice] = l(:notice_pull_closed)
+    else
+      flash[:error] = l(:notice_pull_close_failed)
+    end
+    redirect_to :action => 'show', :project_id => @project.identifier, :id => @pull.id
+  end
+  
   def close
     @pull = Pull.find(params[:id])
     if @pull.update_attributes(:status => "closed")

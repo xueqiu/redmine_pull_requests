@@ -65,8 +65,33 @@ module RedminePullRequests
         end
         conflict
       end
-      
-            
+
+      def merge(repo_name, identifier_from, identifier_to)
+        #script = "#{RAILS_ROOT}/vendor/plugins/redmine_pull_requests/script/git-auto-merge"
+        script = "#{File.dirname(__FILE__)}/../../script/git-auto-merge"
+        repo_path = root_url || url
+
+        result = []
+        ret = shellout("#{script} #{repo_path} #{identifier_from} #{identifier_to} #{repo_name}") do |io|        
+          io.each_line do |line|
+            result << line
+          end
+        end
+        result        
+      end
+
+      def merge_directly(identifier_from, identifier_to)
+        cmd_args = []
+        cmd_args << "merge" << "--no-ff" <<  "#{identifier_from}" << "#{identifier_to}"
+        result = []
+        git_cmd(cmd_args) do |io|
+          io.each_line do |line|
+            result << line
+          end
+        end
+        result
+      end
+                  
     end
   end
 end

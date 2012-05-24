@@ -68,6 +68,7 @@ module RedminePullRequests
 
       def merge(repo_name, identifier_from, identifier_to)
         #script = "#{RAILS_ROOT}/vendor/plugins/redmine_pull_requests/script/git-auto-merge"
+        if merge_conflict?(identifier_from, identifier_to) return
         script = "#{File.dirname(__FILE__)}/../../script/git-auto-merge"
         repo_path = root_url || url
 

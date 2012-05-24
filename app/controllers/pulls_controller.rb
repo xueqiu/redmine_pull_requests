@@ -43,30 +43,31 @@ class PullsController < ApplicationController
       end
       
       @merge_conflict = @repository.merge_conflict?(@base_branch, @head_branch)
-    else
-      items = @pull.items
-      if items.length > 0
-        diff_item = items.shift if items.first.item_type == 'diff'
-        commits = []
-        @statuses = []
-        @comments = []
-        items.each do |i| 
-          if i.item_type == 'commit'
-            commits << i.revision
-          elsif i.item_type == 'comment'
-            @comments << i
-          else
-            @statuses << i
-          end
-        end
-        @revisions = Changeset.find(:all, :conditions => ["scmid IN (?)",commits], :order => 'committed_on')
-        @cache_key = "repositories/diff/#{@repository.id}/" +
-                     Digest::MD5.hexdigest("#{@path}-#{@revisions}-#{@diff_type}-#{current_language}")
-        unless read_fragment(@cache_key)        
-          @diff = (diff_item.present? and diff_item.item_type == 'diff') ? diff_item.content.split('$$$$$') : ""
+    end
+
+    items = @pull.items(true)
+    if items.length > 0
+      diff_item = items.shift if items.first.item_type == 'diff'
+      commits = []
+      @statuses = []
+      @comments = []
+      items.each do |i| 
+        if i.item_type == 'commit'
+          commits << i.revision
+        elsif i.item_type == 'comment'
+          @comments << i
+        else
+          @statuses << i
         end
       end
+      @revisions = Changeset.find(:all, :conditions => ["scmid IN (?)",commits], :order => 'committed_on')
+      @cache_key = "repositories/diff/#{@repository.id}/" +
+                   Digest::MD5.hexdigest("#{@path}-#{@revisions}-#{@diff_type}-#{current_language}")
+      unless read_fragment(@cache_key)        
+        @diff = (diff_item.present? and diff_item.item_type == 'diff') ? diff_item.content.split('$$$$$') : ""
+      end
     end
+  
   end
 
   def new

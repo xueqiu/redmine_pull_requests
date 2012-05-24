@@ -26,7 +26,7 @@ class Pull < ActiveRecord::Base
     subject
   end
   
-  def self.review_by(user_id = User.current.id)
+  def review_by(user_id = User.current.id)
       items.create(:item_type => "reviewed", :user_id => user_id)
   end
   
@@ -51,12 +51,13 @@ class Pull < ActiveRecord::Base
       if changeset.present?
         merge_from_branch = ''
         msg = changeset.comments 
-        if msg and msg.index('Merge')
-          merge_from_branch = msg.split(' ').last
+        if msg
+          matched = msg.scan(/(Merge branch ')(.*)('.*)/)
+          merge_from_branch = matched[0][-2] if matched.length > 0
         end
         #matched_merge_pull = matched_merge(pull.base_branch, pull.head_branch)
         matched_merge_pull = Pull.find(:first, :conditions => [ "status = 'open' and base_branch = ? and head_branch = ?", 
-                                                                pull.base_branch, pull.head_branch ])
+                                                                pull.base_branch, merge_from_branch ])
         if matched_merge_pull.present?
           matched_merge_pull.update_attributes(:status => "closed")
           matched_merge_pull.merge_by(changeset.user_id)

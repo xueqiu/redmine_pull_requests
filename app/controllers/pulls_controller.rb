@@ -128,7 +128,8 @@ class PullsController < ApplicationController
   def reviewed
     @pull = Pull.find(params[:id])
     if @pull.update_attributes(:status => "closed")
-      @pull.items.create(:item_type => "reviewed", :user_id => User.current.id)
+      #@pull.items.create(:item_type => "reviewed", :user_id => User.current.id)
+      @pull.review_by(User.current.id)
       flash[:notice] = l(:notice_pull_closed)
     else
       flash[:error] = l(:notice_pull_close_failed)
@@ -139,10 +140,13 @@ class PullsController < ApplicationController
   def merge
     @pull = Pull.find(params[:id])
     if @pull.update_attributes(:status => "closed")
-      @pull.repository.merge(@pull.base_branch, @pull.head_branch)
-      @pull.items.create(:item_type => "reviewed", :user_id => User.current.id)
-      @pull.items.create(:item_type => "merged", :user_id => User.current.id)
-      @pull.items.create(:item_type => "closed", :user_id => User.current.id)
+      #@pull.repository.merge(@pull.base_branch, @pull.head_branch)
+      #@pull.items.create(:item_type => "reviewed", :user_id => User.current.id)
+      #@pull.items.create(:item_type => "merged", :user_id => User.current.id)
+      #@pull.items.create(:item_type => "closed", :user_id => User.current.id)
+      @pull.review_by(User.current.id)
+      @pull.merge_by(User.current.id)      
+      
       flash[:notice] = l(:notice_pull_closed)
     else
       flash[:error] = l(:notice_pull_close_failed)
@@ -153,8 +157,11 @@ class PullsController < ApplicationController
   def close
     @pull = Pull.find(params[:id])
     if @pull.update_attributes(:status => "closed")
-      @pull.items.create(:item_type => "reviewed", :user_id => User.current.id)
-      @pull.items.create(:item_type => "closed", :user_id => User.current.id)
+      #@pull.items.create(:item_type => "reviewed", :user_id => User.current.id)
+      #@pull.items.create(:item_type => "closed", :user_id => User.current.id)
+      @pull.review_by(User.current.id)
+      @pull.close_by(User.current.id)      
+      
       flash[:notice] = l(:notice_pull_closed)
     else
       flash[:error] = l(:notice_pull_close_failed)

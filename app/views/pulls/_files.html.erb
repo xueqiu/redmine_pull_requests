@@ -1,0 +1,17 @@
+<style>
+#toc { padding: 0; margin: 10px 0; }
+#toc li { border-bottom: 1px solid #DDD; list-style-type: none; padding: 5px;}
+</style>
+<ol id="toc">
+<% lastest_rev = @revisions.last %>
+<% @files.each do |file| %>
+<li>
+<%= link_to(h(file), :controller => 'repositories',
+                     :action => 'entry',
+                     :id => @project,
+                     :repository_id => @repository.identifier_param,
+                     :path => file,
+                     :rev => lastest_rev.identifier) %>
+</li>
+<% end -%>
+</ol>

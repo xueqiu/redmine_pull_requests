@@ -2,7 +2,7 @@ class CreatePullItems < ActiveRecord::Migration
   def self.up
     create_table :pull_items, :force => true do |t|
         t.integer "pull_id", :null => false
-        t.string  "item_type", :null => false # comment / commit / diff / merged / reviewed / closed / canceled
+        t.string  "item_type", :null => false # comment / commit / file / diff / merged / reviewed / closed / canceled
         t.integer "user_id", :null => true
         t.string "revision", :null => true
         t.integer "line", :null => true

@@ -28,11 +28,16 @@ class PullsController < ApplicationController
       
       # if there are new commits, save commits and update diff
       rev_count = @revisions.length
-      item_count = @pull.items.length-1
+      item_count = @pull.items.count(:conditions => "item_type = 'commit'")
       if rev_count > item_count 
         if @diff.present?
           diff_item = @pull.items.first
           diff_item.update_attributes(:content => @diff.join('$$$$$')) if diff_item.item_type == 'diff'
+        end
+        
+        PullItem.delete_all("pull_id = #{@pull.id} and item_type = 'file'")
+        @files.each do |f|
+          PullItem.create(:pull_id => @pull.id, :item_type => "file", :content => f) 
         end
         
         revs = @revisions[item_count, rev_count-item_count]
@@ -48,18 +53,22 @@ class PullsController < ApplicationController
     items = @pull.items(true)
     if items.length > 0
       diff_item = items.shift if items.first.item_type == 'diff'
-      commits = []
       @statuses = []
       @comments = []
+      @files = []
+      commits = []
       items.each do |i| 
         if i.item_type == 'commit'
           commits << i.revision
+        elsif i.item_type == 'file'
+          @files << i.content
         elsif i.item_type == 'comment'
           @comments << i
         else
           @statuses << i
         end
       end
+      puts "====== #{@files} ========"
       @revisions = Changeset.find(:all, :conditions => ["scmid IN (?)",commits], :order => 'committed_on')
       @cache_key = "repositories/diff/#{@repository.id}/" +
                    Digest::MD5.hexdigest("#{@path}-#{@revisions}-#{@diff_type}-#{current_language}")
@@ -210,6 +219,7 @@ class PullsController < ApplicationController
     @rev_to = head_branch
 
     @revisions = repository.revisions('', @rev, @rev_to)
+    @files = repository.diff_files_with_merge_base(@path, @rev_to, @rev)
     if @revisions.size > 0
       @diff_type = 'inline'
       @cache_key = "repositories/diff/#{@repository.id}/" +
@@ -224,11 +234,16 @@ class PullsController < ApplicationController
     rev = params[:pull][:base_branch]
     rev_to = params[:pull][:head_branch]    
     revisions = @repository.revisions('', rev, rev_to)
+    files = @repository.diff_files_with_merge_base('', rev_to, rev)
     diff = @repository.diff_with_merge_base('', rev_to, rev)
     
     if(revisions.length > 0) 
       if diff.present?
         PullItem.create(:pull_id => pull.id, :item_type => "diff", :content => diff.join('$$$$$'))
+      end
+
+      files.each do |f|
+        PullItem.create(:pull_id => pull.id, :item_type => "file", :content => f)
       end
       
       revisions.each do |r|

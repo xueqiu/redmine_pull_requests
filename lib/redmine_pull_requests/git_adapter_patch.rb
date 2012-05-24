@@ -17,11 +17,7 @@ module RedminePullRequests
       def diff_with_merge_base(path, identifier_from, identifier_to=nil)
         path ||= ''
         cmd_args = []
-        if identifier_to
-          cmd_args << "diff" << "--no-color" <<  "#{identifier_to}...#{identifier_from}"
-        else
-          cmd_args << "show" << "--no-color" << identifier_from
-        end
+        cmd_args << "diff" << "--no-color" <<  "#{identifier_to}...#{identifier_from}"
         cmd_args << "--" <<  scm_iconv(@path_encoding, 'UTF-8', path) unless path.empty?
         diff = []
         git_cmd(cmd_args) do |io|
@@ -30,6 +26,22 @@ module RedminePullRequests
           end
         end
         diff
+      rescue ScmCommandAborted
+        nil
+      end
+
+      def diff_files_with_merge_base(path, identifier_from, identifier_to=nil)
+        path ||= ''
+        cmd_args = []
+        cmd_args << "diff" << "--no-color" << "--name-only" <<  "#{identifier_to}...#{identifier_from}"
+        cmd_args << "--" <<  scm_iconv(@path_encoding, 'UTF-8', path) unless path.empty?
+        files = []
+        git_cmd(cmd_args) do |io|
+          io.each_line do |line|
+            files << line.gsub(/\n/, '')
+          end
+        end
+        files
       rescue ScmCommandAborted
         nil
       end
@@ -68,7 +80,7 @@ module RedminePullRequests
 
       def merge(repo_name, identifier_from, identifier_to)
         #script = "#{RAILS_ROOT}/vendor/plugins/redmine_pull_requests/script/git-auto-merge"
-        if merge_conflict?(identifier_from, identifier_to) return
+        return if merge_conflict?(identifier_from, identifier_to) 
         script = "#{File.dirname(__FILE__)}/../../script/git-auto-merge"
         repo_path = root_url || url
 

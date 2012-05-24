@@ -95,6 +95,13 @@ label {
 </p>
 
 <h3><%= l(:label_file_changed) %></h3>
+
+<p>
+<% if @files %>
+<%= render :partial => 'files' %>
+<% end -%>
+</p>
+
 <p>
 <%= @diff_format_revisions %> 
 <% cache(@cache_key) do -%>

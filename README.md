@@ -11,7 +11,7 @@ In you redmine dir, execute following commands:
 1. rake db:migrate_plugins RAILS_ENV=production
 1. install git repository post-receive hook
 ```
-  (rake -f /data/deploy/redmine-1.4.1/Rakefile redmine:fetch_changesets ; \
+  (rake -f /data/deploy/redmine-1.4.1/Rakefile redmine:fetch_changesets ; \ 
    rake -f /data/deploy/redmine-1.4.1/Rakefile redmine:auto_close_pull) > /dev/null 2>&1 &
 ```
 1. restart redmine

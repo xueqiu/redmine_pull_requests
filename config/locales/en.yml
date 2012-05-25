@@ -44,3 +44,4 @@ en:
   notice_pull_cant_be_merged: "This pull request can not be automatically merged. Please merge these two branches manually."
   
   text_pull_added: "Pull request %{id} has been added by %{user}."
+  text_pull_updated: "Pull request %{id} has been closed by %{user}."

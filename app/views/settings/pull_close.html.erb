@@ -1,0 +1,12 @@
+<%= l(:text_pull_updated, :id => "##{@pull.id}", :user => h(@pull.user)) %>
+<hr />
+
+<h1><%= link_to(h("Pull request ##{@pull.id}: #{@pull.title}"), @pull_url) %></h1>
+
+<ul>
+<li><%=l(:label_repository)%>: <%=h @pull.repository.name %></li>
+<li><%=l(:label_base_branch)%>: <%=h @pull.base_branch %></li>
+<li><%=l(:label_head_branch)%>: <%=h @pull.head_branch %></li>
+</ul>
+
+<%= textilizable(@pull, :description, :only_path => false) %>

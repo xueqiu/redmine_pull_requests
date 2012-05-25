@@ -17,6 +17,7 @@ en:
   label_edit: "Edit"
   label_status: "Status"
   label_commits: "Commits"
+  label_diff: "Diff"
   label_file_changed: "File changed"
   label_default_sent_to_email: "Default sent to email"
   

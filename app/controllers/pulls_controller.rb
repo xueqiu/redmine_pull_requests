@@ -6,14 +6,14 @@ class PullsController < ApplicationController
   before_filter :find_repository, :only => [:new, :edit, :create, :update]
 
   def index
-    @status = params[:status].present? ? params[:status] : "open"
+    status = params[:status].present? ? params[:status] : "open"
     
     @limit = per_page_option
-    @pulls_count = @project.pulls.with_status(@status).count
+    @pulls_count = @project.pulls.with_status(status).count
     @pulls_pages = Paginator.new(self, @pulls_count, @limit, params[:page])
     @offset ||= @pulls_pages.current.offset
     
-    @pulls = @project.pulls.find(:all, :conditions => ["status = ?", @status],
+    @pulls = @project.pulls.find(:all, :conditions => ["status = ?", status],
                                  :order => 'created_on DESC', :offset => @offset, :limit => @limit)
   end
   

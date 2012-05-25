@@ -2,6 +2,8 @@ ActionController::Routing::Routes.draw do |map|
   
   map.with_options :controller => 'pulls' do |pulls|
     pulls.with_options :conditions => {:method => :get} do |pull_view|
+      pull_view.connect 'projects/:project_id/pulls', 
+                        :action => 'index'
       pull_view.connect 'projects/:project_id/pulls/status/:status', 
                         :action => 'index'
       pull_view.connect 'projects/:project_id/pull/:id', 

@@ -52,6 +52,10 @@ label {
 <% end -%>
 
 <p>
+<% labelled_form_for :pull, :url => { :action => "review", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
+<%= f.submit l(:button_review_pull_request), :disabled => closed %>
+<% end -%>
+
 <% unless @merge_conflict %>
 <% labelled_form_for :pull, :url => { :action => "merge", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
 <%= f.submit l(:button_merge_pull_request), :disabled => closed %>

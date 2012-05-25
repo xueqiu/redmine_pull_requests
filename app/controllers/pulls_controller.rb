@@ -68,7 +68,6 @@ class PullsController < ApplicationController
           @statuses << i
         end
       end
-      puts "====== #{@files} ========"
       @revisions = Changeset.find(:all, :conditions => ["scmid IN (?)",commits], :order => 'committed_on')
       @cache_key = "repositories/diff/#{@repository.id}/" +
                    Digest::MD5.hexdigest("#{@path}-#{@revisions}-#{@diff_type}-#{current_language}")
@@ -135,14 +134,12 @@ class PullsController < ApplicationController
     end
   end
 
-  def reviewed
+  def review
     @pull = Pull.find(params[:id])
-    if @pull.update_attributes(:status => "closed")
-      #@pull.items.create(:item_type => "reviewed", :user_id => User.current.id)
-      @pull.review_by(User.current.id)
-      flash[:notice] = l(:notice_pull_closed)
+    if @pull.review_by(User.current.id)
+      flash[:notice] = l(:notice_pull_reviewed)
     else
-      flash[:error] = l(:notice_pull_close_failed)
+      flash[:error] = l(:notice_pull_review_failed)
     end
     redirect_to :action => 'show', :project_id => @project.identifier, :id => @pull.id
   end
@@ -150,10 +147,6 @@ class PullsController < ApplicationController
   def merge
     @pull = Pull.find(params[:id])
     if @pull.update_attributes(:status => "closed")
-      #@pull.repository.merge(@pull.base_branch, @pull.head_branch)
-      #@pull.items.create(:item_type => "reviewed", :user_id => User.current.id)
-      #@pull.items.create(:item_type => "merged", :user_id => User.current.id)
-      #@pull.items.create(:item_type => "closed", :user_id => User.current.id)
       @pull.review_by(User.current.id)
       @pull.merge_by(User.current.id)      
       
@@ -167,8 +160,6 @@ class PullsController < ApplicationController
   def close
     @pull = Pull.find(params[:id])
     if @pull.update_attributes(:status => "closed")
-      #@pull.items.create(:item_type => "reviewed", :user_id => User.current.id)
-      #@pull.items.create(:item_type => "closed", :user_id => User.current.id)
       @pull.review_by(User.current.id)
       @pull.close_by(User.current.id)      
       

@@ -22,7 +22,8 @@ class PullsController < ApplicationController
     @repository = @pull.repository
     @base_branch = @pull.base_branch
     @head_branch = @pull.head_branch
-    
+    find_diff_type
+
     if @pull.status == "open"
       find_diff(@repository, @base_branch, @head_branch)
       
@@ -49,7 +50,7 @@ class PullsController < ApplicationController
       
       @merge_conflict = @repository.merge_conflict?(@base_branch, @head_branch)
     end
-
+    
     items = @pull.items(true)
     if items.length > 0
       diff_item = items.shift if items.first.item_type == 'diff'
@@ -81,6 +82,7 @@ class PullsController < ApplicationController
   def new
     @base_branch = params[:base_branch]
     @head_branch = params[:head_branch]
+    find_diff_type
 
     @repositories = @project.repositories
 
@@ -212,12 +214,22 @@ class PullsController < ApplicationController
     @revisions = repository.revisions('', @rev, @rev_to)
     @files = repository.diff_files_with_merge_base(@path, @rev_to, @rev)
     if @revisions.size > 0
-      @diff_type = 'inline'
       @cache_key = "repositories/diff/#{@repository.id}/" +
                    Digest::MD5.hexdigest("#{@path}-#{@revisions}-#{@diff_type}-#{current_language}")
       unless read_fragment(@cache_key)
         @diff = @repository.diff_with_merge_base(@path, @rev_to, @rev)
       end
+    end
+  end
+
+  def find_diff_type
+    @diff_type = params[:type] || User.current.pref[:diff_type] || 'inline'
+    @diff_type = 'inline' unless %w(inline sbs).include?(@diff_type)
+
+    # Save diff type as user preference
+    if User.current.logged? && @diff_type != User.current.pref[:diff_type]
+      User.current.pref[:diff_type] = @diff_type
+      User.current.preference.save
     end
   end
   

@@ -98,7 +98,9 @@ label {
 <% end -%>
 </p>
 
-<h3><%= l(:label_file_changed) %></h3>
+<h3>
+<%= l(:label_file_changed) %> 
+</h3>
 
 <p>
 <% if @files %>
@@ -107,16 +109,30 @@ label {
 </p>
 
 <p>
-<%= @diff_format_revisions %> 
+
 <% cache(@cache_key) do -%>
 <% if @diff %>
+
+<!-- Choose view type -->
+<% form_tag({:path => to_path_param(@path)}, :method => 'get') do %>
+  <%= hidden_field_tag('base_branch', params[:base_branch]) if params[:base_branch] %>
+  <%= hidden_field_tag('head_branch', params[:head_branch]) if params[:head_branch] %>
+  <div>
+    <label><%= l(:label_view_diff) %></label>
+    <%= select_tag 'type',
+                    options_for_select(
+                      [[l(:label_diff_inline), "inline"], [l(:label_diff_side_by_side), "sbs"]], @diff_type),
+                    :onchange => "if (this.value != '') {this.form.submit()}" %>
+  </div>
+<% end %>
+
+
 <%= render :partial => 'common/diff', :locals => {:diff => @diff, :diff_type => @diff_type} %>
 <% end -%>
 <% end -%>
 </p>
 
 <% end -%>
-
 
 
 <%= render "sidebar" %>

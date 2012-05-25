@@ -3,7 +3,7 @@ class PullObserver < ActiveRecord::Observer
     PullMailer.deliver_pull_add(pull) #if Setting.notified_events.include?('issue_added')
   end
   
-  def after_save(pull)
+  def after_update(pull)
     PullMailer.deliver_pull_close(pull) #if Setting.notified_events.include?('issue_added')
   end  
 end

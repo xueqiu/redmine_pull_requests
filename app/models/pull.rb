@@ -13,10 +13,6 @@ class Pull < ActiveRecord::Base
     { :conditions => { :status => status } }
   }
   
-  named_scope :matched_merge, lambda { |base_branch, head_branch|
-    { :conditions => [ "status = 'open' and base_branch = ? and head_branch = ?", base_branch, head_branch ] }
-  }
-  
   def subject
     if self.title.present?
       subject = self.title
@@ -27,7 +23,7 @@ class Pull < ActiveRecord::Base
   end
   
   def review_by(user_id = User.current.id)
-      items.create(:item_type => "reviewed", :user_id => user_id)
+    items.create(:item_type => "reviewed", :user_id => user_id)
   end
   
   def merge_by(user_id = User.current.id)

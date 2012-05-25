@@ -22,14 +22,16 @@ Dispatcher.to_prepare :redmine_pull_requests do
   unless Redmine::Scm::Adapters::GitAdapter.included_modules.include? RedminePullRequests::GitAdapterPatch
     Redmine::Scm::Adapters::GitAdapter.send(:include, RedminePullRequests::GitAdapterPatch)
   end
+  
+  ActiveRecord::Base.observers << :pull_observer
 end
 
 Redmine::Plugin.register :redmine_pull_requests do
   name 'Redmine Pull Requests plugin'
-  author 'pawa'
-  description 'github like pull requests for redmine'
+  author 'Stone Wang'
+  description 'Github like pull requests plugin for redmine'
   version '0.1'
-  url 'http://github.com/pawa/redmine_pull_requests'
+  url 'http://github.com/xueqiu/redmine_pull_requests'
   author_url 'http://pawa.github.com'
 
   requires_redmine :version_or_higher => '1.4.0'
@@ -43,4 +45,6 @@ Redmine::Plugin.register :redmine_pull_requests do
   
   menu :project_menu, :pulls, { :controller => 'pulls', :action => 'index' }, 
        :caption => :label_pull_requests, :after => :label_wiki, :param => :project_id  
+       
+  settings(:default => { 'default_sent_to_email' => 'admin@example.org' }, :partial => 'settings/pull_requests_settings')
 end

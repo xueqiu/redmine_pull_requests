@@ -18,6 +18,7 @@ en:
   label_status: "Status"
   label_commits: "Commits"
   label_file_changed: "File changed"
+  label_default_sent_to_email: "Default sent to email"
   
   field_title: "Title"
   field_created: "Created"
@@ -41,3 +42,5 @@ en:
   notice_pull_close_failed: "Pull request close failed"
   notice_pull_cancel_failed: "Pull request cancel failed"
   notice_pull_cant_be_merged: "This pull request can not be automatically merged. Please merge these two branches manually."
+  
+  text_pull_added: "Pull request %{id} has been added by %{user}."

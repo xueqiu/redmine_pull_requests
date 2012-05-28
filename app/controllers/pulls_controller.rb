@@ -22,6 +22,19 @@ class PullsController < ApplicationController
     @repository = @pull.repository
     @base_branch = @pull.base_branch
     @head_branch = @pull.head_branch
+    
+    # verify branch exist or not
+    unless @repository.cat('', @base_branch)
+      flash[:error] = l(:notice_pull_branch_not_exists, :branch => @base_branch)
+      @branch_error = true
+    end
+
+    unless @repository.cat('', @head_branch)
+      flash[:error] = l(:notice_pull_branch_not_exists, :branch => @head_branch)
+      @branch_error = true
+    end
+    # verify branch exist or not
+    
     find_diff_type
 
     if @pull.status == "open"
@@ -33,7 +46,7 @@ class PullsController < ApplicationController
       if rev_count > item_count 
         if @diff.present?
           diff_item = @pull.items.first
-          diff_item.update_attributes(:content => @diff.join('$$$$$')) if diff_item.item_type == 'diff'
+          diff_item.update_attributes(:content => @diff.join('$$$$$')) if diff_item and diff_item.item_type == 'diff'
         end
         
         PullItem.delete_all("pull_id = #{@pull.id} and item_type = 'file'")

@@ -53,17 +53,17 @@ label {
 
 <p>
 <% labelled_form_for :pull, :url => { :action => "review", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
-<%= f.submit l(:button_review_pull_request), :disabled => closed %>
+<%= f.submit l(:button_review_pull_request), :disabled => closed, :disabled => @branch_error %>
 <% end -%>
 
 <% unless @merge_conflict %>
 <% labelled_form_for :pull, :url => { :action => "merge", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
-<%= f.submit l(:button_merge_pull_request), :disabled => closed %>
+<%= f.submit l(:button_merge_pull_request), :disabled => closed, :disabled => @branch_error %>
 <% end -%>
 <% end -%>
 
 <% labelled_form_for :pull, :url => { :action => "close", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
-<%= f.submit l(:button_close_pull_request), :disabled => closed %>
+<%= f.submit l(:button_close_pull_request), :disabled => closed, :disabled => @branch_error %>
 <% end -%>
 
 <% labelled_form_for :pull, :url => { :action => "cancel", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>

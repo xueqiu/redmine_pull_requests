@@ -26,7 +26,7 @@ module RedminePullRequests
           end
         end
         diff
-      rescue ScmCommandAborted
+      rescue Redmine::Scm::Adapters::AbstractAdapter::ScmCommandAborted
         nil
       end
 
@@ -42,7 +42,7 @@ module RedminePullRequests
           end
         end
         files
-      rescue ScmCommandAborted
+      rescue Redmine::Scm::Adapters::AbstractAdapter::ScmCommandAborted
         nil
       end
 
@@ -56,6 +56,8 @@ module RedminePullRequests
           end
         end
         revision
+      rescue Redmine::Scm::Adapters::AbstractAdapter::ScmCommandAborted
+        nil
       end 
       
       def merge_conflict?(identifier_from, identifier_to)
@@ -76,6 +78,8 @@ module RedminePullRequests
           end
         end
         conflict
+      rescue Redmine::Scm::Adapters::AbstractAdapter::ScmCommandAborted
+        nil
       end
 
       def merge(repo_name, identifier_from, identifier_to)
@@ -91,6 +95,8 @@ module RedminePullRequests
           end
         end
         result        
+      rescue Redmine::Scm::Adapters::AbstractAdapter::ScmCommandAborted
+        nil
       end
 
       def merge_directly(identifier_from, identifier_to)
@@ -103,8 +109,11 @@ module RedminePullRequests
           end
         end
         result
+      rescue Redmine::Scm::Adapters::AbstractAdapter::ScmCommandAborted
+        nil
       end
                   
     end
   end
+
 end

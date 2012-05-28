@@ -35,6 +35,8 @@ class PullsController < ApplicationController
     end
     # verify branch exist or not
     
+    @button_disable = (@pull.status != "open" ? true : false) or @branch_error
+    
     find_diff_type
 
     if @pull.status == "open"

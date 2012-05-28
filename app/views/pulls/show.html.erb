@@ -11,8 +11,6 @@ label {
 </style>
 <% end %>
 
-<% closed = @pull.status != "open" ? true : false %>
-
 <h2><%= title %> #<%= @pull.id %></h2>
 
 <div class="box">
@@ -53,21 +51,21 @@ label {
 
 <p>
 <% labelled_form_for :pull, :url => { :action => "review", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
-<%= f.submit l(:button_review_pull_request), :disabled => closed, :disabled => @branch_error %>
+<%= f.submit l(:button_review_pull_request), :disabled => @button_disable %>
 <% end -%>
 
 <% unless @merge_conflict %>
 <% labelled_form_for :pull, :url => { :action => "merge", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
-<%= f.submit l(:button_merge_pull_request), :disabled => closed, :disabled => @branch_error %>
+<%= f.submit l(:button_merge_pull_request), :disabled => @button_disable %>
 <% end -%>
 <% end -%>
 
 <% labelled_form_for :pull, :url => { :action => "close", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
-<%= f.submit l(:button_close_pull_request), :disabled => closed, :disabled => @branch_error %>
+<%= f.submit l(:button_close_pull_request), :disabled => @button_disable %>
 <% end -%>
 
 <% labelled_form_for :pull, :url => { :action => "cancel", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
-<%= f.submit l(:button_cancel_pull_request), :disabled => closed %>
+<%= f.submit l(:button_cancel_pull_request), :disabled => @button_disable %>
 <% end -%>
 </p>
 

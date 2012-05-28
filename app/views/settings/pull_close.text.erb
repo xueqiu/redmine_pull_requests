@@ -1,8 +1,8 @@
-<%= l(:text_pull_updated, :id => "##{@pull.id}", :user => h(@pull.user)) %>
+<%= l(:text_pull_updated, :id => "##{@pull.id}", :user => h(@user)) %>
 ----------------------------------------
 
 <%= "Pull request ##{@pull.id}: #{@pull.title}" %>
-<%= @issue_url %>
+<%= @pull_url %>
 
 <%=l(:label_repository)%>: <%=h @pull.repository %>
 <%=l(:label_base_branch)%>: <%=h @pull.base_branch %>

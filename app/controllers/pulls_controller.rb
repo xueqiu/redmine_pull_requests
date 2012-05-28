@@ -163,7 +163,7 @@ class PullsController < ApplicationController
     @pull = Pull.find(params[:id])
     if @pull.update_attributes(:status => "closed")
       @pull.review_by(User.current.id)
-      @pull.close_by(User.current.id)      
+      @pull.close_by(User.current.id)
       
       flash[:notice] = l(:notice_pull_closed)
     else

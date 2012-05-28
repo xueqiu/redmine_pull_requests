@@ -22,19 +22,29 @@ class Pull < ActiveRecord::Base
     subject
   end
   
+  def item(status)
+    PullItem.with_status(id, status)
+  end
+  
   def review_by(user_id = User.current.id)
-    items.create(:item_type => "reviewed", :user_id => user_id)
+    unless item('reviewed').length > 0
+      items.create(:item_type => "reviewed", :user_id => user_id)
+    end
   end
   
   def merge_by(user_id = User.current.id)
-    repository.merge(base_branch, head_branch)
+    unless item('merged').length > 0
+      repository.merge(base_branch, head_branch)
     
-    items.create(:item_type => "merged", :user_id => user_id)
-    items.create(:item_type => "closed", :user_id => user_id)
+      items.create(:item_type => "merged", :user_id => user_id)
+      items.create(:item_type => "closed", :user_id => user_id)
+    end
   end
 
   def close_by(user_id = User.current.id)
-    items.create(:item_type => "closed", :user_id => user_id)
+    unless item('closed').length > 0
+      items.create(:item_type => "closed", :user_id => user_id)
+    end
   end
   
   def self.auto_close

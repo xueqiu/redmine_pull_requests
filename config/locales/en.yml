@@ -22,7 +22,7 @@ en:
   label_default_sent_to_email: "Default sent to email"
   
   field_title: "Title"
-  field_created: "Created"
+  field_created_on: "Created"
   field_user: "User"
   field_description: "Description"
   

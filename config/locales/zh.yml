@@ -1,0 +1,48 @@
+# English strings go here for Rails i18n
+zh:
+  label_repository: "版本库"
+  label_pull_requests: "合并请求"
+  label_pull_requests_view: "查看合并请求"
+  label_pull_request_new: "新建合并请求"
+  label_pull_request_edit: "编辑合并请求"
+  label_pull_request_show: "合并请求"
+  
+  label_status: "状态"
+  label_base_branch: "基线分支"
+  label_head_branch: "合并分支"
+  
+  label_open: "打开的"
+  label_closed: "已关闭的"
+  label_canceled: "已取消的"
+  label_edit: "编辑"
+  label_status: "状态"
+  label_commits: "修订"
+  label_diff: "差别"
+  label_file_changed: "文件"
+  label_default_sent_to_email: "缺省的发送邮件地址"
+  
+  field_title: "标题"
+  field_created_on: "创建时间"
+  field_user: "用户"
+  field_description: "描述"
+  
+  button_send_pull_request: "发送合并请求"
+  button_review_pull_request: "审查合并请求"
+  button_merge_pull_request: "合并合并请求"
+  button_close_pull_request: "关闭合并请求"
+  button_cancel_pull_request: "取消合并请求"
+  
+  notice_pull_created: "合并请求已创建"
+  notice_pull_updated: "合并请求已更新"
+  notice_pull_reviewed: "合并请求已审查"
+  notice_pull_closed: "合并请求已关闭"
+  notice_pull_canceled: "合并请求已取消"
+  notice_pull_create_failed: "合并请求创建失败"
+  notice_pull_update_failed: "合并请求更新失败"
+  notice_pull_review_failed: "合并请求审查失败"
+  notice_pull_close_failed: "合并请求关闭失败"
+  notice_pull_cancel_failed: "合并请求取消失败"
+  notice_pull_cant_be_merged: "这次的合并请求无法自动合并，请手动合并这两个分支。"
+  
+  text_pull_added: "合并请求 %{id} 已由 %{user} 提交。"
+  text_pull_updated: "合并请求 %{id} 已由 %{user} 更新。"

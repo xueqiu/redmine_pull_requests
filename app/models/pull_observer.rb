@@ -4,6 +4,8 @@ class PullObserver < ActiveRecord::Observer
   end
   
   def after_update(pull)
-    PullMailer.deliver_pull_close(pull) #if Setting.notified_events.include?('issue_added')
+    if pull.status == 'closed'
+      PullMailer.deliver_pull_close(pull) #if Setting.notified_events.include?('issue_added')
+    end
   end  
 end

@@ -65,7 +65,7 @@ label {
 <% end -%>
 
 <% labelled_form_for :pull, :url => { :action => "cancel", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
-<%= f.submit l(:button_cancel_pull_request), :disabled => @button_disable %>
+<%= f.submit l(:button_cancel_pull_request), :disabled => @button_cancel_disable %>
 <% end -%>
 </p>
 

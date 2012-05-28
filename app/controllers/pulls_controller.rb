@@ -24,18 +24,23 @@ class PullsController < ApplicationController
     @head_branch = @pull.head_branch
     
     # verify branch exist or not
-    unless @repository.cat('', @base_branch)
-      flash[:error] = l(:notice_pull_branch_not_exists, :branch => @base_branch)
-      @branch_error = true
-    end
+    if @pull.status == "open"
+      unless @repository.cat('', @base_branch)
+        flash[:error] = l(:notice_pull_branch_not_exists, :branch => @base_branch)
+        @button_disable = true
+        @button_cancel_disable = false
+      end
 
-    unless @repository.cat('', @head_branch)
-      flash[:error] = l(:notice_pull_branch_not_exists, :branch => @head_branch)
-      @branch_error = true
+      unless @repository.cat('', @head_branch)
+        flash[:error] = l(:notice_pull_branch_not_exists, :branch => @head_branch)
+        @button_disable = true
+        @button_cancel_disable = false
+      end
+    else
+      @button_disable = true
+      @button_cancel_disable = true
     end
     # verify branch exist or not
-    
-    @button_disable = (@pull.status != "open" ? true : false) or @branch_error
     
     find_diff_type
 

@@ -4,7 +4,7 @@
 <%= "Pull request ##{@pull.id}: #{@pull.title}" %>
 <%= @pull_url %>
 
-<%=l(:label_repository)%>: <%=h @pull.repository %>
+<%=l(:label_repository)%>: <%=h @pull.repository.name %>
 <%=l(:label_base_branch)%>: <%=h @pull.base_branch %>
 <%=l(:label_head_branch)%>: <%=h @pull.head_branch %>
 

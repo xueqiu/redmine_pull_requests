@@ -14,8 +14,9 @@ class PullMailer < Mailer
     render_multipart('settings/pull_add', body)
   end
   
-  def pull_close(pull)
-    @user = pull.item('closed').user
+  def pull_close(item)
+    pull = item.pull
+    @user = item.user
     
     redmine_headers 'Project' => pull.project.identifier,
                     'Pull-Request-Id' => pull.id,

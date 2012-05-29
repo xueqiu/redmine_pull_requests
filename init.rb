@@ -24,6 +24,7 @@ Dispatcher.to_prepare :redmine_pull_requests do
   end
   
   ActiveRecord::Base.observers << :pull_observer
+  ActiveRecord::Base.observers << :pull_item_observer
 end
 
 Redmine::Plugin.register :redmine_pull_requests do

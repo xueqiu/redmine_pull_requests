@@ -70,65 +70,142 @@ label {
 </p>
 
 <% if @base_branch and @head_branch %>
+<style type="text/css">
+ul {
+  padding: 0;
+}
+ul.smalltabs {
+margin: 15px 0 15px 0;
+height: 24px;
+line-height: 24px;
+font-size: 12px;
+color: #555;
+text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+background: #E8E8E8;
+background: -moz-linear-gradient(#E8E8E8,#D2D2D2);
+background: -webkit-linear-gradient(#E8E8E8,#D2D2D2);
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8e8e8',endColorstr='#d2d2d2')";
+border: 1px solid #D1D1D1;
+border-bottom-color: #BBB;
+border-radius: 3px;
+}
+ul.smalltabs li {
+list-style-type: none;
+display: inline;
+}
+ul.smalltabs li:first-child a.selected {
+border-top-left-radius: 3px;
+border-bottom-left-radius: 3px;
+}
+ul.smalltabs li:first-child a {
+border-left: none;
+}
+ul.smalltabs a.selected {
+color: 
+#333;
+background: white;
+background: -moz-linear-gradient(white,#F2F2F2);
+background: -webkit-linear-gradient(white,#F2F2F2);
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='white',endColorstr='#f2f2f2')";
+}
+ul.smalltabs a {
+float: left;
+height: 24px;
+padding: 0 7px;
+color: #666;
+font-weight: bold;
+text-decoration: none;
+border-right: 1px solid #ABABAB;
+border-left: 1px solid #F6F6F6;
+}
+</style>
 
-<% if @statuses %>
-<h3><%= l(:label_status) %></h3>
-<p>
-<table class="list changesets">
-<tbody>
-<% @statuses.each do |status| %>
-<% if status.item_type != "comment" %>
-<tr class="pull_item <%= cycle 'odd', 'even' %>">
-<td class="content"><label><%= h truncate(status.user.to_s) %></label> <%= status.item_type %> the pull request #<%= @pull.id %></td>
-<td class="created_on"><%= format_time(status.created_on) %></td>
-</tr>
-<% end -%>
-<% end -%>
-</tbody>
-</table>
-</p>
-<% end -%>
+<ul class="js-hard-tabs  smalltabs" id="smalltabs">
+<li><a href="#" name="status" onclick="selectTab(this); return false;" class="selected"><%= l(:label_status)%> (<%= @statuses.length %>)</a></li>
+<li><a href="#" name="commits" onclick="selectTab(this); return false;"><%= l(:label_commits) %> (<%= @revisions.length %>)</a></li>
+<li><a href="#" name="files" onclick="selectTab(this); return false;"><%= l(:label_diff) %> (<%= @files.length %>)</a></li>
+</ul>
 
-<h3><%= l(:label_commits) %></h3>
-<p>
-<% if @revisions %>
-<%= render :partial => 'revisions' %>
-<% end -%>
-</p>
+<script type="text/javascript">
+function selectTab(obj,bucket) {
+  tabs = $('smalltabs').children
+  for (var i = tabs.length - 1; i >= 0; i--) {
+    a = tabs[i].children[0];
+    bucket = a.name + "_bucket";
+    if(a == obj) {
+      $(bucket).style.display = 'block';
+      a.className = 'selected';
+    } else {
+      $(bucket).style.display = 'none';
+      a.className = '';
+    }
+  }
+  return false;
+}
+function bindTabs() {
+  tabs = $('smalltabs').children
+  for (var i = tabs.length - 1; i >= 0; i--) {
+    tab = tabs[i];
+    a = tab.children[0];
+    a.onClick = click;
+  };
+}
+//bindTabs();
+</script>
 
-<h3>
-<%= l(:label_file_changed) %> 
-</h3>
+<div id="status_bucket" style="display: block;">
+  <% if @statuses %>
+  <h3><%= l(:label_status) %></h3>
+  <p>
+  <%= render :partial => 'statuses' %>
+  </p>
+  <% end -%>
+</div>
 
-<p>
-<% if @files %>
-<%= render :partial => 'files' %>
-<% end -%>
-</p>
+<div id="commits_bucket" style="display: none;">
+  <h3><%= l(:label_commits) %></h3>
+  <p>
+  <% if @revisions %>
+  <%= render :partial => 'revisions' %>
+  <% end -%>
+  </p>
+</div>
 
-<p>
-
-<% cache(@cache_key) do -%>
-<% if @diff %>
-
-<!-- Choose view type -->
-<% form_tag({:path => to_path_param(@path)}, :method => 'get') do %>
-  <%= hidden_field_tag('base_branch', params[:base_branch]) if params[:base_branch] %>
-  <%= hidden_field_tag('head_branch', params[:head_branch]) if params[:head_branch] %>
+<div id="files_bucket" style="display: none;">
   <h3>
-    <%= l(:label_diff) %>
-    <%= select_tag 'type',
-                    options_for_select(
-                      [[l(:label_diff_inline), "inline"], [l(:label_diff_side_by_side), "sbs"]], @diff_type),
-                    :onchange => "if (this.value != '') {this.form.submit()}" %>
+  <%= l(:label_file_changed) %> 
   </h3>
-<% end %>
+
+  <p>
+  <% if @files %>
+  <%= render :partial => 'files' %>
+  <% end -%>
+  </p>
+
+  <p>
+
+  <% cache(@cache_key) do -%>
+  <% if @diff %>
+
+  <!-- Choose view type -->
+  <% form_tag({:path => to_path_param(@path)}, :method => 'get') do %>
+    <%= hidden_field_tag('base_branch', params[:base_branch]) if params[:base_branch] %>
+    <%= hidden_field_tag('head_branch', params[:head_branch]) if params[:head_branch] %>
+    <h3>
+      <%= l(:label_diff) %>
+      <%= select_tag 'type',
+                      options_for_select(
+                        [[l(:label_diff_inline), "inline"], [l(:label_diff_side_by_side), "sbs"]], @diff_type),
+                      :onchange => "if (this.value != '') {this.form.submit()}" %>
+    </h3>
+  <% end %>
 
 
-<%= render :partial => 'common/diff', :locals => {:diff => @diff, :diff_type => @diff_type} %>
-<% end -%>
-<% end -%>
-</p>
+  <%= render :partial => 'common/diff', :locals => {:diff => @diff, :diff_type => @diff_type} %>
+  <% end -%>
+  <% end -%>
+  </p>
+</div>
 
 <% end -%>
 

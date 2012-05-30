@@ -1,6 +1,7 @@
 <%= l(:text_pull_updated, :id => "##{@pull.id}", :user => h(@user)) %>
 
-<%=l(:label_status) %>: <%=h @item.item_type.camelize %>
+<%= @item.content %>
+
 ----------------------------------------
 
 <%= "Pull request ##{@pull.id}: #{@pull.title}" %>

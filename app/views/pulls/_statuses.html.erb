@@ -1,17 +1,3 @@
-<!--
-  <table class="list changesets">
-  <tbody>
-  <% @statuses.each do |status| %>
-  <% if status.item_type != "comment" %>
-  <tr class="pull_item <%= cycle 'odd', 'even' %>">
-  <td class="content"><label><%= h truncate(status.user.to_s) %></label> <%= status.item_type %> the pull request #<%= @pull.id %></td>
-  <td class="created_on"><%= format_time(status.created_on) %></td>
-  </tr>
-  <% end -%>
-  <% end -%>
-  </tbody>
-  </table>
--->
   <% @statuses.each do |status| %>
   <p>
   <h4>
@@ -19,10 +5,22 @@
   </h4>
   <div>
   <% if status.item_type == "comment" %>
+  <%= textilizable status.content %>
   <% else %>
-  <%= status.item_type %> the pull request #<%= @pull.id %>
+  <p><%= status.item_type %> the pull request #<%= @pull.id %></p>
   <% end -%>
   </div>
-  
   </p>
+
   <% end -%>
+
+  <p>
+    <h4><%= l(:label_comment) %></h4>
+    <% labelled_form_for :pull, 
+                         :url => { :action => "comment", :project_id => @project.identifier, :pull_id => @pull.id },
+                         :html => { :method => :put } do |f| %>    
+    <%= text_area_tag 'comment', '', :cols => 60, :rows => 10, :class => 'wiki-edit' %>
+    <%= wikitoolbar_for 'comment' %>
+    <%= f.submit l(:label_comment) %>    
+    <% end -%>
+  </p>

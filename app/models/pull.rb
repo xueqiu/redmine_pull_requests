@@ -25,6 +25,10 @@ class Pull < ActiveRecord::Base
   def item(status)
     PullItem.with_status(id, status)
   end
+
+  def comment(conetent)
+    items.create(:item_type => "comment", :user_id => User.current.id, :content => conetent)
+  end
   
   def review_by(user_id = User.current.id)
     unless item('reviewed').length > 0

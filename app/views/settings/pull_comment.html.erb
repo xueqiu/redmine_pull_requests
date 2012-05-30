@@ -1,6 +1,6 @@
 <%= l(:text_pull_updated, :id => "##{@pull.id}", :user => h(@user)) %>
 
-<p><%=l(:label_status) %>: <%=h @item.item_type.camelize %></p>
+<%= textilizable(@item, :content, :only_path => false) %>
 
 <hr />
 

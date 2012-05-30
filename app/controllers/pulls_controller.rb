@@ -84,7 +84,7 @@ class PullsController < ApplicationController
         elsif i.item_type == 'file'
           @files << i.content
         elsif i.item_type == 'comment'
-          @comments << i
+          @statuses << i
         else
           @statuses << i
         end
@@ -154,6 +154,16 @@ class PullsController < ApplicationController
       flash[:error] = l(:notice_pull_update_failed)
       render :edit
     end
+  end
+
+  def comment
+    @pull = Pull.find(params[:id])
+    if @pull.comment(params[:comment])
+      flash[:notice] = l(:notice_pull_commented)
+    else
+      flash[:error] = l(:notice_pull_comment_failed)
+    end
+    redirect_to :action => 'show', :project_id => @project.identifier, :id => @pull.id
   end
 
   def review

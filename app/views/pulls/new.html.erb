@@ -4,18 +4,39 @@
 
 <% content_for :header_tags do %>
 <%= stylesheet_link_tag 'scm' %>
-<style>
-label {
-	width: 70px; display: inline-block; vertical-align: top;
-}
-</style>
+<%= stylesheet_link_tag 'pull', :plugin => "redmine_pull_requests"  %>
 <% end %>
 
 <h2><%= title %></h2>
 
 <% labelled_form_for :pull, :url => { :action => "create", :project_id => @project.identifier } do |f| %>
-
 <%= render :partial => "fields", :locals => { :f => f } %>
+<% end -%>
+
+<% if @head_branch.present? and @base_branch.present? %>
+
+<h3><%= l(:label_commits) %></h3>
+<p>
+<% if @revisions %>
+<%= render :partial => 'revisions' %>
+<% end -%>
+</p>
+
+<h3><%= l(:label_file_changed) %></h3>
+
+<p>
+<% if @files %>
+<%= render :partial => 'files' %>
+<% end -%>
+</p>
+
+<p>
+<% cache(@cache_key) do -%>
+<% if @diff %>
+<%= render :partial => 'common/diff', :locals => {:diff => @diff, :diff_type => @diff_type} %>
+<% end -%>
+<% end -%>
+</p>
 
 <% end -%>
 

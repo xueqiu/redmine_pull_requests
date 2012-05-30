@@ -10,9 +10,9 @@
 <%= link_to_if_authorized(l(:label_open), {:controller => 'pulls', :action => 'index', :project_id => @project.identifier, :status => "open" },
                             :class => 'icon icon-duplicate') %>
 <%= link_to_if_authorized(l(:label_closed), {:controller => 'pulls', :action => 'index', :project_id => @project.identifier, :status => "closed" },
-														:class => 'icon icon-lock') %>
+							:class => 'icon icon-lock') %>
 <%= link_to_if_authorized(l(:label_canceled), {:controller => 'pulls', :action => 'index', :project_id => @project.identifier, :status => "canceled" },
-														:class => 'icon icon-del') %>
+							:class => 'icon icon-del') %>
 </div>
 
 <h2><%=h title %></h2>

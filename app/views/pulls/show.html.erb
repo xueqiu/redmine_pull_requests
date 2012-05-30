@@ -10,6 +10,7 @@
 
 <h2><%= title %> #<%= @pull.id %></h2>
 
+<!-- fields -->
 <div class="box">
 <% if @pull.title.present? %>
 <h3><%= @pull.title %></h3>
@@ -42,6 +43,7 @@
 
 </div>
 
+<!-- buttons -->
 <% if @merge_conflict %>
 <div class="flash error"><%= l(:notice_pull_cant_be_merged) %></div>
 <% end -%>
@@ -66,6 +68,7 @@
 <% end -%>
 </p>
 
+<!-- updates / commits / files -->
 <% if @base_branch and @head_branch %>
 
 <ul class="smalltabs" id="smalltabs">
@@ -104,10 +107,6 @@
   </p>
 
   <p>
-
-  <% cache(@cache_key) do -%>
-  <% if @diff %>
-
   <!-- Choose view type -->
   <% form_tag({:path => to_path_param(@path)}, :method => 'get') do %>
     <%= hidden_field_tag('base_branch', params[:base_branch]) if params[:base_branch] %>
@@ -121,13 +120,16 @@
     </h3>
   <% end %>
 
+  <% cache(@cache_key) do -%>
+  <% if @diff %>
   <%= render :partial => 'common/diff', :locals => {:diff => @diff, :diff_type => @diff_type} %>
   <% end -%>
   <% end -%>
   </p>
+
 </div>
 
 <% end -%>
 
-
+<!-- sidebar -->
 <%= render "sidebar" %>

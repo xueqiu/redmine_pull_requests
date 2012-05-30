@@ -4,18 +4,14 @@
 
 <% content_for :header_tags do %>
 <%= stylesheet_link_tag 'scm' %>
-<style>
-label {
-	width: 70px; display: inline-block; vertical-align: top;
-}
-</style>
+<%= stylesheet_link_tag 'pull', :plugin => "redmine_pull_requests"  %>
 <% end %>
 
 <h2><%= title %></h2>
 
 <% labelled_form_for :pull, @pull,
-										 :url => { :action => "update", :project_id => @project.identifier, :id => @pull },
-										 :html => { :method => :put } do |f| %>
+					 :url => { :action => "update", :project_id => @project.identifier, :id => @pull },
+					 :html => { :method => :put } do |f| %>
 
 <%= render :partial => "fields", :locals => { :f => f } %>
 

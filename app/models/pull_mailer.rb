@@ -42,12 +42,13 @@ class PullMailer < Mailer
     body :pull => pull, :item => item,
          :pull_url => url_for(:controller => 'pulls', :action => 'show', :project_id => pull.project.identifier, :id => pull.id)
     render_multipart('settings/pull_comment', body)
-  end  
+  end
 
   private
   def find_recipients(repo)
     default = Setting.plugin_redmine_pull_requests['default_sent_to_email']
-    recipients = User.find_all_by_id(repo.committers.collect(&:last).collect(&:to_i)).collect(&:mail)
+    # get active user only
+    recipients = User.find_all_by_id_and_status(repo.committers.collect(&:last).collect(&:to_i), 1).collect(&:mail)
     recipients += [default] if !recipients.include?(default)
     recipients
   end

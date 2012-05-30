@@ -28,11 +28,11 @@ en:
   field_user: "User"
   field_description: "Description"
   
-  button_send_pull_request: "Send pull request"
-  button_review_pull_request: "Review pull request"
-  button_merge_pull_request: "Merge pull request"
-  button_close_pull_request: "Close pull request"
-  button_cancel_pull_request: "Cancel pull request"
+  button_send_pull_request: "Send"
+  button_review_pull_request: "Review"
+  button_merge_pull_request: "Merge"
+  button_close_pull_request: "Close"
+  button_cancel_pull_request: "Cancel"
   
   notice_pull_created: "Pull request created"
   notice_pull_updated: "Pull request updated"

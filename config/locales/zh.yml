@@ -28,11 +28,11 @@ zh:
   field_user: "用户"
   field_description: "描述"
   
-  button_send_pull_request: "发送合并请求"
-  button_review_pull_request: "审查合并请求"
-  button_merge_pull_request: "合并合并请求"
-  button_close_pull_request: "关闭合并请求"
-  button_cancel_pull_request: "取消合并请求"
+  button_send_pull_request: "发送"
+  button_review_pull_request: "审查"
+  button_merge_pull_request: "合并"
+  button_close_pull_request: "关闭"
+  button_cancel_pull_request: "取消"
   
   notice_pull_created: "合并请求已创建"
   notice_pull_updated: "合并请求已更新"

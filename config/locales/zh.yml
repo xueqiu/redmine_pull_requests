@@ -29,7 +29,7 @@ zh:
   field_description: "描述"
   
   button_send_pull_request: "发送"
-  button_review_pull_request: "审查"
+  button_review_pull_request: "已阅"
   button_merge_pull_request: "合并"
   button_close_pull_request: "关闭"
   button_cancel_pull_request: "取消"

@@ -13,7 +13,7 @@ then
 fi	
 
 cd $CACHED_GIT_PATH
-git fetch --all
+git fetch --all -p
 git pull --all
 git checkout $HEAD_BRANCH
 git pull origin $HEAD_BRANCH
@@ -21,3 +21,9 @@ git checkout $BASE_BRANCH
 git pull origin $BASE_BRANCH
 git merge --no-ff $BASE_BRANCH $HEAD_BRANCH
 git push origin $BASE_BRANCH
+
+# clean up branch
+if [ $HEAD_BRANCH != 'master' ]
+then
+	git branch -D $HEAD_BRANCH
+fi

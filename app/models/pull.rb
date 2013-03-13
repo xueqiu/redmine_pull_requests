@@ -9,7 +9,7 @@ class Pull < ActiveRecord::Base
   
   validates_presence_of :repository_id, :base_branch, :head_branch
 
-  named_scope :with_status, lambda { |status|
+  scope :with_status, lambda { |status|
     { :conditions => { :status => status } }
   }
   

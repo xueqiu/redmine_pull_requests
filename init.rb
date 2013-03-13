@@ -1,12 +1,20 @@
 require 'redmine'
-require 'dispatcher'
 
 require_dependency 'redmine_pull_requests/view_hooks'
 require_dependency 'redmine_pull_requests/project_patch'
 require_dependency 'redmine_pull_requests/repository_patch'
 require_dependency 'redmine_pull_requests/git_adapter_patch'
 
-Dispatcher.to_prepare :redmine_pull_requests do
+
+Redmine::Activity.map do |activity|
+  activity.register :pulls
+end
+
+Redmine::Search.map do |search|
+  search.register :pulls
+end
+
+ActionDispatch::Reloader.to_prepare do
   require_dependency 'project'
   require_dependency 'repository'
   require_dependency 'redmine/scm/adapters/git_adapter'
@@ -49,3 +57,11 @@ Redmine::Plugin.register :redmine_pull_requests do
        
   settings(:default => { 'default_sent_to_email' => 'admin@example.org' }, :partial => 'settings/pull_requests_settings')
 end
+
+
+
+
+
+
+
+

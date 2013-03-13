@@ -104,6 +104,7 @@ class PullsController < ApplicationController
     @head_branch = params[:head_branch]
     find_diff_type
 
+    @pull = @project.pulls.build
     @repositories = @project.repositories
 
     # diff

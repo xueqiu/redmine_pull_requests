@@ -16,9 +16,9 @@
 
   <p>
     <h4><%= l(:label_comment) %></h4>
-    <% labelled_form_for :pull, 
-                         :url => { :action => "comment", :project_id => @project.identifier, :pull_id => @pull.id },
-                         :html => { :method => :put } do |f| %>    
+    <%= labelled_form_for @pull, 
+                          :url => { :action => "comment", :project_id => @project.identifier, :pull_id => @pull.id },
+                          :html => { :method => :put } do |f| %>    
     <%= text_area_tag 'comment', '', :cols => 60, :rows => 10, :class => 'wiki-edit' %>
     <%= wikitoolbar_for 'comment' %>
     <%= f.submit l(:label_comment) %>    

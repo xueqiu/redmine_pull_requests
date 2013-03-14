@@ -9,9 +9,9 @@
 
 <h2><%= title %></h2>
 
-<% labelled_form_for :pull, @pull,
-					 :url => { :action => "update", :project_id => @project.identifier, :id => @pull },
-					 :html => { :method => :put } do |f| %>
+<%= labelled_form_for @pull,
+					  :url => { :action => "update", :project_id => @project.identifier, :id => @pull },
+					  :html => { :method => :put } do |f| %>
 
 <%= render :partial => "fields", :locals => { :f => f } %>
 

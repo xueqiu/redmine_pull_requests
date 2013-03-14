@@ -49,21 +49,21 @@
 <% end -%>
 
 <p>
-<% labelled_form_for :pull, :url => { :action => "review", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
+<%= labelled_form_for @pull, :url => { :action => "review", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
 <%= f.submit l(:button_review_pull_request), :disabled => @button_disable %>
 <% end -%>
 
 <% unless @merge_conflict %>
-<% labelled_form_for :pull, :url => { :action => "merge", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
+<%= labelled_form_for @pull, :url => { :action => "merge", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
 <%= f.submit l(:button_merge_pull_request), :disabled => @button_disable %>
 <% end -%>
 <% end -%>
 
-<% labelled_form_for :pull, :url => { :action => "close", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
+<%= labelled_form_for @pull, :url => { :action => "close", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
 <%= f.submit l(:button_close_pull_request), :disabled => @button_disable %>
 <% end -%>
 
-<% labelled_form_for :pull, :url => { :action => "cancel", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
+<%= labelled_form_for @pull, :url => { :action => "cancel", :project_id => @project.identifier }, :html => { :method => :put } do |f| %>
 <%= f.submit l(:button_cancel_pull_request), :disabled => @button_cancel_disable %>
 <% end -%>
 </p>
@@ -72,9 +72,9 @@
 <% if @base_branch and @head_branch %>
 
 <ul class="smalltabs" id="smalltabs">
-<li><a href="javascript:void(0)" name="status" class="selected"><%= l(:label_status)%> (<%= @statuses.length %>)</a></li>
-<li><a href="javascript:void(0)" name="commits"><%= l(:label_commits) %> (<%= @revisions.length %>)</a></li>
-<li><a href="javascript:void(0)" name="files"><%= l(:label_diff) %> (<%= @files.length %>)</a></li>
+<li><a href="javascript:void(0)" id="status" name="status" class="selected"><%= l(:label_status)%> (<%= @statuses.length %>)</a></li>
+<li><a href="javascript:void(0)" id="commits" name="commits"><%= l(:label_commits) %> (<%= @revisions.length %>)</a></li>
+<li><a href="javascript:void(0)" id="files" name="files"><%= l(:label_diff) %> (<%= @files.length %>)</a></li>
 </ul>
 
 <div id="status_bucket" style="display: block;">
@@ -122,7 +122,7 @@
 
   <% cache(@cache_key) do -%>
   <% if @diff %>
-  <%= render :partial => 'common/diff', :locals => {:diff => @diff, :diff_type => @diff_type} %>
+  <%= render :partial => 'common/diff', :locals => {:diff => @diff, :diff_type => @diff_type, :diff_style => @diff_type} %>
   <% end -%>
   <% end -%>
   </p>

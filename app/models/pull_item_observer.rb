@@ -1,9 +1,9 @@
 class PullItemObserver < ActiveRecord::Observer
   def after_create(item)
   	if item.item_type == 'closed'
-    	PullMailer.deliver_pull_close(item)
+    	PullMailer.pull_close(item).deliver
 	elsif item.item_type == 'comment'
-		PullMailer.deliver_pull_comment(item)
+		PullMailer.pull_comment(item).deliver
 	end
   end
 end

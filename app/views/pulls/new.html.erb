@@ -9,7 +9,7 @@
 
 <h2><%= title %></h2>
 
-<% labelled_form_for @pull, :url => { :action => "create", :project_id => @project.identifier } do |f| %>
+<%= labelled_form_for @pull, :url => { :action => "create", :project_id => @project.identifier } do |f| %>
 <%= render :partial => "fields", :locals => { :f => f } %>
 <% end -%>
 

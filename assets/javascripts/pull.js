@@ -1,22 +1,19 @@
-Event.observe(window,'load',function() {
-
-  tabs = $('smalltabs').children
-  for (var i = tabs.length - 1; i >= 0; i--) {
-    aobj = tabs[i].children[0];
-    aobj.observe('click', function(e) {
-      for (var i = tabs.length - 1; i >= 0; i--) {
-        a = tabs[i].children[0];
-        bucket = a.name + "_bucket";
-        if(a == e.target) {
-          $(bucket).style.display = 'block';
-          a.className = 'selected';
+function change_tabs() {
+  tabs = $('#smalltabs').find('a');
+  tabs.each(function() {
+    $(this).click(function(e) {
+      tabs.each(function(){
+        bucket = '#' + this.name + '_bucket';
+        if(this == e.target) {
+          $(bucket).show();
+          $(this).addClass('selected');
         } else {
-          $(bucket).style.display = 'none';
-          a.className = '';
+          $(bucket).hide();
+          $(this).removeClass('selected');
         }
-      }
-      return false;
-    });    
-  };
+      });
+    });
+  });
+}
 
-})
+$(document).ready(change_tabs);

@@ -23,7 +23,7 @@ git merge --no-ff $BASE_BRANCH $HEAD_BRANCH
 git push origin $BASE_BRANCH
 
 # clean up branch
-if [ $HEAD_BRANCH != 'master' ]
+if [ $HEAD_BRANCH != 'master' && $HEAD_BRANCH != 'develop' ]
 then
 	git branch -D $HEAD_BRANCH
 fi

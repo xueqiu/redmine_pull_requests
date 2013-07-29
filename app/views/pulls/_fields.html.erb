@@ -25,7 +25,11 @@
 <p><%= f.text_field :title, :label => :field_title, :size => 77 %></p>
 <p><%= f.text_area :description, :label => :field_description, :rows => 10, :cols => 80 %></p>
 
-<label></label>
+<p>
+<label><%= l(:label_pull_reviewers) %></label>
+<%= watchers_checkboxes(@pull, @available_watchers) %>
+</p>
+
 
 </div>
 

@@ -12,6 +12,9 @@ class Pull < ActiveRecord::Base
   scope :with_status, lambda { |status|
     { :conditions => { :status => status } }
   }
+
+  acts_as_watchable
+  attr_accessible :watcher_user_ids, :base_branch, :head_branch, :title, :description, :status
   
   def subject
     if self.title.present?

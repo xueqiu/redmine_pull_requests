@@ -107,6 +107,8 @@ class PullsController < ApplicationController
     @pull = @project.pulls.build
     @repositories = @project.repositories
 
+    @available_watchers = @project.users.sort
+
     # diff
     if @head_branch.present? and @base_branch.present?
       find_diff(@repository, @base_branch, @head_branch)
@@ -293,4 +295,5 @@ class PullsController < ApplicationController
       end
     end
   end
+
 end

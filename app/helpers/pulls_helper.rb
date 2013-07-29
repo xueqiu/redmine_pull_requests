@@ -25,5 +25,16 @@ module PullsHelper
       text.gsub(%r{^(.{#{length}}[^\n]*)\n.+$}m, '\\1...')
     end
   end
+
+  def watchers_checkboxes(object, users, checked=nil)
+    users.map do |user|
+      c = false
+      tag = check_box_tag 'pull[watcher_user_ids][]', user.id, c, :id => nil
+      content_tag 'label', "#{tag} #{h(user)}".html_safe,
+                  :id => "pull_watcher_user_ids_#{user.id}",
+                  :class => "floating"
+    end.join.html_safe
+  end
+
     
 end

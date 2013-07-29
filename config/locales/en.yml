@@ -22,6 +22,7 @@ en:
   label_diff: "Diff"
   label_file_changed: "File changed"
   label_default_sent_to_email: "Default sent to email"
+  label_pull_reviewers: "Reviewers"
   
   field_title: "Title"
   field_created_on: "Created"

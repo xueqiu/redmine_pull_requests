@@ -22,6 +22,7 @@ zh:
   label_diff: "差别"
   label_file_changed: "文件"
   label_default_sent_to_email: "缺省的发送邮件地址"
+  label_pull_reviewers: "审核人"
   
   field_title: "标题"
   field_created_on: "创建时间"

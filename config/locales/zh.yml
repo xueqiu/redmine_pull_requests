@@ -48,6 +48,7 @@ zh:
   notice_pull_comment_failed: "评论创建失败"
   notice_pull_cant_be_merged: "这次的合并请求无法自动合并，请手动合并这两个分支。"
   notice_pull_branch_not_exists: "分支 %{branch} 不存在"
+  notice_pull_same_dont_need_to_recreat: "已经从存在相同的合并请求了，不需要重新创建！"
   
   text_pull_added: "合并请求 %{id} 已由 %{user} 提交。"
   text_pull_updated: "合并请求 %{id} 已由 %{user} 更新。"

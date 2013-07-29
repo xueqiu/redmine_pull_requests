@@ -117,6 +117,13 @@ class PullsController < ApplicationController
     @pull = @project.pulls.build(params[:pull])
     @pull.repository = @repository
     @pull.user = User.current
+
+    pull = Pull.where({base_branch: @pull.base_branch, head_branch: @pull.head_branch, status: 'open'}).first
+    if pull
+      flash[:notice] = l(:notice_pull_same_dont_need_to_recreat)
+      redirect_to :action => 'show', :project_id => @project.identifier, :id => pull.id
+      return
+    end
     
     if @pull.save
       save_items(@pull)

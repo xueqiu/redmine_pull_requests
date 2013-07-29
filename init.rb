@@ -39,11 +39,11 @@ Redmine::Plugin.register :redmine_pull_requests do
   name 'Redmine Pull Requests plugin'
   author 'Stone Wang'
   description 'Github like pull requests plugin for redmine'
-  version '0.1'
+  version '0.3'
   url 'http://github.com/xueqiu/redmine_pull_requests'
   author_url 'http://pawa.github.com'
 
-  requires_redmine :version_or_higher => '1.4.0'
+  requires_redmine :version_or_higher => '2.2.x'
 
   project_module :pull_requests do
     permission :view_pull_requests,   :pulls => [:index, :show]

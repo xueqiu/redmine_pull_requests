@@ -26,7 +26,7 @@ module PullsHelper
     end
   end
 
-  def watchers_checkboxes(object, users, checked=nil)
+  def pull_watchers_checkboxes(object, users, checked=nil)
     users.map do |user|
       c = false
       tag = check_box_tag 'pull[watcher_user_ids][]', user.id, c, :id => nil

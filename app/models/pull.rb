@@ -14,7 +14,8 @@ class Pull < ActiveRecord::Base
   }
 
   acts_as_watchable
-  attr_accessible :watcher_user_ids, :base_branch, :head_branch, :title, :description, :status
+  attr_accessible :base_branch, :head_branch, :title, 
+                  :description, :status, :watcher_user_ids
   
   def subject
     if self.title.present?

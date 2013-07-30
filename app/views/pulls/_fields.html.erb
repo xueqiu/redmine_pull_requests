@@ -26,8 +26,8 @@
 <p><%= f.text_area :description, :label => :field_description, :rows => 10, :cols => 80 %></p>
 
 <p>
-<label><%= l(:label_pull_reviewers) %></label>
-<%= watchers_checkboxes(@pull, @available_watchers) %>
+<label><%= l(:label_issue_watchers) %></label>
+<%= pull_watchers_checkboxes(@pull, @available_watchers) %>
 </p>
 
 

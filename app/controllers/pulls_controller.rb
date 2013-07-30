@@ -1,6 +1,9 @@
 class PullsController < ApplicationController
   unloadable
 
+  helper :watchers
+  include WatchersHelper
+
   #menu_item :pull_requests
   before_filter :find_project
   before_filter :find_repository, :only => [:new, :edit, :create, :update]

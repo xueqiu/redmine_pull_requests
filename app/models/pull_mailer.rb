@@ -53,9 +53,13 @@ class PullMailer < Mailer
   def find_recipients(pull)
     default = Setting.plugin_redmine_pull_requests['default_sent_to_email']
 
-    repo = pull.repository
-    # get active user only
-    recipients = User.find_all_by_id_and_status(repo.committers.collect(&:last).collect(&:to_i), 1).collect(&:mail)
+    recipients = pull.watcher_recipients
+    unless recipients && recipients.size > 0
+        repo = pull.repository
+        # get active user only
+        recipients = User.find_all_by_id_and_status(repo.committers.collect(&:last).collect(&:to_i), 1).collect(&:mail)
+    end
+
     recipients += [default] if !recipients.include?(default)
     recipients
   end

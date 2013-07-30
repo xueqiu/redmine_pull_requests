@@ -50,6 +50,7 @@ Redmine::Plugin.register :redmine_pull_requests do
     permission :add_pull_requests,    :pulls => [:new, :create]
     permission :edit_pull_requests,   :pulls => [:edit, :update]
     permission :delete_pull_requests, :pulls => [:destroy]
+    permission :delete_pull_watchers, :watchers => [:destroy]
   end
   
   menu :project_menu, :pulls, { :controller => 'pulls', :action => 'index' }, 

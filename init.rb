@@ -6,13 +6,13 @@ require_dependency 'redmine_pull_requests/repository_patch'
 require_dependency 'redmine_pull_requests/git_adapter_patch'
 
 
-Redmine::Activity.map do |activity|
-  activity.register :pulls
-end
+#Redmine::Activity.map do |activity|
+#  activity.register :pulls
+#end
 
-Redmine::Search.map do |search|
-  search.register :pulls
-end
+#Redmine::Search.map do |search|
+#  search.register :pulls
+#end
 
 ActionDispatch::Reloader.to_prepare do
   require_dependency 'project'

@@ -90,7 +90,7 @@ class Pull < ActiveRecord::Base
 
   def self.could_be_merge?(base_branch, head_branch)
     result = false
-    Pull.where({base_branch: base_branch, head_branch: head_branch, status: 'open'}).each {|pull|
+    Pull.where({base_branch => base_branch, head_branch => head_branch, status => 'open'}).each {|pull|
       items = pull.items.where("item_type='reviewed'").count
       result = (items > 0) ? true : false
     }

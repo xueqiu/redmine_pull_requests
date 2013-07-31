@@ -44,6 +44,19 @@ class PullsController < ApplicationController
       @button_cancel_disable = true
     end
     # verify branch exist or not
+
+    # verify current user is not sender
+    if User.current.id == @pull.user_id
+      @button_disable = true
+    end
+    # verify current user is not sender
+
+    # verify if reviewed
+    unless @pull.reviewed?
+      @button_merge_disable = true
+      @button_close_disable = true
+    end
+    # verify if reviewed
     
     find_diff_type
 
@@ -192,7 +205,6 @@ class PullsController < ApplicationController
   def merge
     @pull = Pull.find(params[:id])
     if @pull.update_attributes(:status => "closed")
-      @pull.review_by(User.current.id)
       @pull.merge_by(User.current.id)      
       
       flash[:notice] = l(:notice_pull_closed)
@@ -205,7 +217,6 @@ class PullsController < ApplicationController
   def close
     @pull = Pull.find(params[:id])
     if @pull.update_attributes(:status => "closed")
-      @pull.review_by(User.current.id)
       @pull.close_by(User.current.id)
       
       flash[:notice] = l(:notice_pull_closed)

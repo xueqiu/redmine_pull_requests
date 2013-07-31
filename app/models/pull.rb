@@ -34,10 +34,14 @@ class Pull < ActiveRecord::Base
     items.create(:item_type => "comment", :user_id => User.current.id, :content => conetent)
   end
   
+  def reviewed?
+    item('reviewed').length > 0
+  end
+
   def review_by(user_id = User.current.id)
-    unless item('reviewed').length > 0
+    #unless item('reviewed').length > 0
       items.create(:item_type => "reviewed", :user_id => user_id)
-    end
+    #end
   end
   
   def merge_by(user_id = User.current.id)
@@ -79,4 +83,19 @@ class Pull < ActiveRecord::Base
       end
     end
   end
+
+  def self.could_be_close?(base_branch, head_branch)
+    result = Pull.could_be_merge?(base_branch, head_branch)
+  end
+
+  def self.could_be_merge?(base_branch, head_branch)
+    result = false
+    Pull.where({base_branch: base_branch, head_branch: head_branch, status: 'open'}).each {|pull|
+      items = pull.items.where("item_type='reviewed'").count
+      result = (items > 0) ? true : false
+    }
+    result
+  end
+
+
 end

@@ -65,6 +65,7 @@ class PullMailer < Mailer
   end
 
   def save_watchers(pull)
+    pull.add_watcher(pull.user)
     watcher_user_ids = pull.watcher_user_ids
     if watcher_user_ids and watcher_user_ids.length > 0
       watcher_user_ids.each {|id|

@@ -17,7 +17,7 @@ class PullMailer < Mailer
     mail :to => recipients, :subject => subject
   end
   
-  def pull_close(item)
+  def pull_status_change(item)
     pull = item.pull
     @user = item.user
     

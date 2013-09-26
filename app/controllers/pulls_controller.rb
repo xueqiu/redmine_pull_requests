@@ -204,24 +204,28 @@ class PullsController < ApplicationController
 
   def merge
     @pull = Pull.find(params[:id])
-    if @pull.update_attributes(:status => "closed")
-      @pull.merge_by(User.current.id)      
-      
-      flash[:notice] = l(:notice_pull_closed)
-    else
-      flash[:error] = l(:notice_pull_close_failed)
+    if @pull.reviewed?
+      if @pull.update_attributes(:status => "closed")
+        @pull.merge_by(User.current.id)      
+        
+        flash[:notice] = l(:notice_pull_closed)
+      else
+        flash[:error] = l(:notice_pull_close_failed)
+      end
     end
     redirect_to :action => 'show', :project_id => @project.identifier, :id => @pull.id
   end
   
   def close
     @pull = Pull.find(params[:id])
-    if @pull.update_attributes(:status => "closed")
-      @pull.close_by(User.current.id)
-      
-      flash[:notice] = l(:notice_pull_closed)
-    else
-      flash[:error] = l(:notice_pull_close_failed)
+    if @pull.reviewed?
+      if @pull.update_attributes(:status => "closed")
+        @pull.close_by(User.current.id)
+        
+        flash[:notice] = l(:notice_pull_closed)
+      else
+        flash[:error] = l(:notice_pull_close_failed)
+      end
     end
     redirect_to :action => 'show', :project_id => @project.identifier, :id => @pull.id
   end

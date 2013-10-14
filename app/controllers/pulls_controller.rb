@@ -77,11 +77,11 @@ class PullsController < ApplicationController
           PullItem.create(:pull_id => @pull.id, :item_type => "file", :content => f) 
         end
         
-        revs = @revisions[item_count, rev_count-item_count]
+        revs = @revisions[item_count-1, rev_count-item_count]
         revs.each do |r|
           PullItem.create(:pull_id => @pull.id, :item_type => "commit", 
                           :revision => r.scmid, :user_id => r.user_id)
-        end        
+        end
       end
       
       @merge_conflict = @repository.merge_conflict?(@base_branch, @head_branch)

@@ -64,23 +64,26 @@ class Pull < ActiveRecord::Base
       if pull.reviewed?
         repo = pull.repository
         
-        changesets = repo.latest_changesets('', pull.base_branch, 1)
-        changeset = changesets.first if changesets.length > 0
-
-        if changeset.present?
-          merge_from_branch = ''
-          msg = changeset.comments 
-          if msg
-            matched = msg.scan(/(Merge branch ')(.*)('.*)/)
-            merge_from_branch = matched[0][-2] if matched.length > 0
-          end
-          #matched_merge_pull = matched_merge(pull.base_branch, pull.head_branch)
-          matched_merge_pull = Pull.find(:first, :conditions => [ "status = 'open' and base_branch = ? and head_branch = ?", 
-                                                                  pull.base_branch, merge_from_branch ])
-          if matched_merge_pull.present?
-            matched_merge_pull.update_attributes(:status => "closed")
-            matched_merge_pull.merge_by(changeset.user_id)
-          end
+        changesets = repo.latest_changesets('', pull.base_branch, 10)
+        if changesets.length > 0
+          changesets.each {|changeset|
+            if changeset.present?
+              merge_from_branch = ''
+              msg = changeset.comments 
+              puts msg
+              if msg
+                matched = msg.scan(/(Merge branch ')(.*)('.*)/)
+                merge_from_branch = matched[0][-2] if matched.length > 0
+              end
+              #matched_merge_pull = matched_merge(pull.base_branch, pull.head_branch)
+              matched_merge_pull = Pull.find(:first, :conditions => [ "status = 'open' and base_branch = ? and head_branch = ?", 
+                                                                      pull.base_branch, merge_from_branch ])
+              if matched_merge_pull.present?
+                matched_merge_pull.update_attributes(:status => "closed")
+                matched_merge_pull.merge_by(changeset.user_id)
+              end
+            end
+          }
         end
       end
     end

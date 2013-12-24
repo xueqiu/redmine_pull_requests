@@ -34,8 +34,8 @@
 <td class="id"><%= pull.id %></td>
 <td class="status"><%= pull[:status].camelize %></td>
 <td class="subject"><%= link_to(pull.subject, {:controller => 'pulls', :action => 'show', :project_id => @project.identifier, :id => pull.id }) %></td>
-<td class="user"><%= h truncate(pull.user.to_s, :length => 30) %></td>
-<td class="repository"><%= pull.repository.name if pull.repository %></td>
+<td class="user"><%= h truncate(pull.user_name, :length => 30) %></td>
+<td class="repository"><%= pull.repository_name if pull.repository %></td>
 <td class="base_branch"><%= pull.base_branch %></td>
 <td class="head_branch"><%= pull.head_branch %></td>
 <td class="created_on"><%= format_time(pull.created_on) %></td>

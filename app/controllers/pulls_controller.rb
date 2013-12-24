@@ -266,16 +266,16 @@ class PullsController < ApplicationController
   
   def find_diff(repository, base_branch, head_branch)
     @path = ''
-    @rev = base_branch
-    @rev_to = head_branch
+    @rev = head_branch
+    @rev_to = base_branch
 
     @revisions = repository.revisions('', @rev, @rev_to)
-    @files = repository.diff_files_with_merge_base(@path, @rev_to, @rev)
+    @files = repository.diff_files_with_merge_base(@path, @rev, @rev_to)
     if @revisions.size > 0
       @cache_key = "repositories/diff/#{@repository.id}/" +
                    Digest::MD5.hexdigest("#{@path}-#{@revisions}-#{@diff_type}-#{current_language}")
       unless read_fragment(@cache_key)
-        @diff = @repository.diff_with_merge_base(@path, @rev_to, @rev)
+        @diff = @repository.diff_with_merge_base(@path, @rev, @rev_to)
       end
     end
   end
@@ -292,11 +292,11 @@ class PullsController < ApplicationController
   end
   
   def save_items(pull)
-    rev = params[:pull][:base_branch]
-    rev_to = params[:pull][:head_branch]    
+    rev = params[:pull][:head_branch]    
+    rev_to = params[:pull][:base_branch]
     revisions = @repository.revisions('', rev, rev_to)
-    files = @repository.diff_files_with_merge_base('', rev_to, rev)
-    diff = @repository.diff_with_merge_base('', rev_to, rev)
+    files = @repository.diff_files_with_merge_base('', rev, rev_to)
+    diff = @repository.diff_with_merge_base('', rev, rev_to)
     
     if(revisions.length > 0) 
       if diff.present?

@@ -12,7 +12,7 @@ class Pull < ActiveRecord::Base
   
   validates_presence_of :repository_id, :base_branch, :head_branch
 
-  scope :with_status, ->(status) { :conditions => { :status => status }}
+  scope :with_status, ->(status) { where(status: status) }
 
   acts_as_watchable
   attr_accessible :base_branch, :head_branch, :title, 
